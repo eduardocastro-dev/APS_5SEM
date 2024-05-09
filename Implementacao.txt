@@ -1,0 +1,5 @@
+Adicionar Nome e cor no cliente servidor/cliente
+Melhorar visual
+Envio de arquivo e/ou envio de imagens
+Gravaçao de audio
+Gravação de video/camera
