@@ -37,9 +37,20 @@ namespace TCPServidor
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtInfo.Text += $"{e.IpPort}: {Encoding.UTF8.GetString(e.Data)}{Environment.NewLine}";
+                string mensagem = $"{e.IpPort}: {Encoding.UTF8.GetString(e.Data)}{Environment.NewLine}";
+                txtInfo.Text += mensagem;
+
+                // Envia a mensagem para todos os clientes conectados, exceto o remetente
+                foreach (string ipPort in listClienteIP.Items)
+                {
+                    if (ipPort != e.IpPort)
+                    {
+                        servidor.Send(ipPort, mensagem);
+                    }
+                }
             });
         }
+
         private void Events_ClientDisconnected(object? sender, ConnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
@@ -61,11 +72,16 @@ namespace TCPServidor
 
         private void btnMensagem_Click(object sender, EventArgs e)
         {
-            if (servidor.IsListening) 
+            if (servidor.IsListening)
             {
-                if(!string.IsNullOrEmpty(txtMensagem.Text) && listClienteIP.SelectedItem != null) // Verifica se a mensagem não está vazia e um cliente esteja selecionado
+                if (!string.IsNullOrEmpty(txtMensagem.Text)) // Verifica se a mensagem não está vazia
                 {
-                    servidor.Send(listClienteIP.SelectedItem.ToString(), txtMensagem.Text);
+                    // Envia a mensagem para todos os clientes conectados
+                    foreach (string ipPort in listClienteIP.Items)
+                    {
+                        servidor.Send(ipPort, txtMensagem.Text);
+                    }
+
                     txtInfo.Text += $"Servidor: {txtMensagem.Text}{Environment.NewLine}";
                     txtMensagem.Text = string.Empty;
                 }
