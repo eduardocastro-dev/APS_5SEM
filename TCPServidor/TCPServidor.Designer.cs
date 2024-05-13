@@ -31,7 +31,6 @@
             label1 = new Label();
             txtIP = new TextBox();
             btnIniciar = new Button();
-            txtInfo = new TextBox();
             btnMensagem = new Button();
             txtMensagem = new TextBox();
             label2 = new Label();
@@ -41,6 +40,7 @@
             txtNomeServidor = new TextBox();
             label5 = new Label();
             cmbCor = new ComboBox();
+            txtInfo = new RichTextBox();
             SuspendLayout();
             // 
             // label1
@@ -71,17 +71,6 @@
             btnIniciar.Text = "Iniciar";
             btnIniciar.UseVisualStyleBackColor = true;
             btnIniciar.Click += btnIniciar_Click;
-            // 
-            // txtInfo
-            // 
-            txtInfo.Location = new Point(103, 40);
-            txtInfo.Margin = new Padding(3, 2, 3, 2);
-            txtInfo.Multiline = true;
-            txtInfo.Name = "txtInfo";
-            txtInfo.ReadOnly = true;
-            txtInfo.ScrollBars = ScrollBars.Both;
-            txtInfo.Size = new Size(480, 252);
-            txtInfo.TabIndex = 3;
             // 
             // btnMensagem
             // 
@@ -146,6 +135,7 @@
             txtNomeServidor.Name = "txtNomeServidor";
             txtNomeServidor.Size = new Size(100, 23);
             txtNomeServidor.TabIndex = 10;
+            txtNomeServidor.TextChanged += txtNomeServidor_TextChanged;
             // 
             // label5
             // 
@@ -163,12 +153,23 @@
             cmbCor.Name = "cmbCor";
             cmbCor.Size = new Size(89, 23);
             cmbCor.TabIndex = 12;
+            cmbCor.SelectedIndexChanged += cmbCor_SelectedIndexChanged;
+            // 
+            // txtInfo
+            // 
+            txtInfo.Cursor = Cursors.IBeam;
+            txtInfo.Location = new Point(103, 44);
+            txtInfo.Name = "txtInfo";
+            txtInfo.Size = new Size(479, 247);
+            txtInfo.TabIndex = 13;
+            txtInfo.Text = "";
             // 
             // TCPServidor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(910, 356);
+            Controls.Add(txtInfo);
             Controls.Add(cmbCor);
             Controls.Add(label5);
             Controls.Add(txtNomeServidor);
@@ -178,7 +179,6 @@
             Controls.Add(txtMensagem);
             Controls.Add(label2);
             Controls.Add(btnMensagem);
-            Controls.Add(txtInfo);
             Controls.Add(btnIniciar);
             Controls.Add(txtIP);
             Controls.Add(label1);
@@ -197,7 +197,6 @@
         private Label label1;
         private TextBox txtIP;
         private Button btnIniciar;
-        private TextBox txtInfo;
         private Button btnMensagem;
         private TextBox txtMensagem;
         private Label label2;
@@ -207,5 +206,6 @@
         private TextBox txtNomeServidor;
         private Label label5;
         private ComboBox cmbCor;
+        private RichTextBox txtInfo;
     }
 }

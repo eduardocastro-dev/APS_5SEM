@@ -38,7 +38,7 @@
             label3 = new Label();
             txtNomeCliente = new TextBox();
             label4 = new Label();
-            comboBox1 = new ComboBox();
+            cmbcor = new ComboBox();
             SuspendLayout();
             // 
             // label1
@@ -125,6 +125,7 @@
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(100, 23);
             txtNomeCliente.TabIndex = 8;
+            txtNomeCliente.TextChanged += txtNomeCliente_TextChanged;
             // 
             // label4
             // 
@@ -135,20 +136,21 @@
             label4.TabIndex = 9;
             label4.Text = "Cor:";
             // 
-            // comboBox1
+            // cmbcor
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(462, 16);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 10;
+            cmbcor.FormattingEnabled = true;
+            cmbcor.Location = new Point(462, 16);
+            cmbcor.Name = "cmbcor";
+            cmbcor.Size = new Size(121, 23);
+            cmbcor.TabIndex = 10;
+            cmbcor.SelectedIndexChanged += cmbcor_SelectedIndexChanged;
             // 
             // TCPCliente
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(615, 356);
-            Controls.Add(comboBox1);
+            Controls.Add(cmbcor);
             Controls.Add(label4);
             Controls.Add(txtNomeCliente);
             Controls.Add(label3);
@@ -181,6 +183,6 @@
         private Label label3;
         private TextBox txtNomeCliente;
         private Label label4;
-        private ComboBox comboBox1;
+        private ComboBox cmbcor;
     }
 }

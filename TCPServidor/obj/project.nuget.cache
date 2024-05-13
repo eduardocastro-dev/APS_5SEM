@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "RbsmXp8J9sH71CEHOKADYMdKQgqCSkOnh72PetXHhYN0aQf+WrVpJ6RbkqOqYZTKGxmCDpo/KtC4ZkgI4hjX9A==",
+  "dgSpecHash": "SmFO4hRXcX8cDodNP/gSJlZyNY3e1EYTpu9QZiintEuRE/PVMVF5l77S4tO6iwP0gQla19BkP5eVtQvR6KvA4g==",
   "success": true,
-  "projectFilePath": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.csproj",
+  "projectFilePath": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPServidor\\TCPServidor.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\eduet\\.nuget\\packages\\supersimpletcp\\3.0.14\\supersimpletcp.3.0.14.nupkg.sha512"
+    "C:\\Users\\eduar\\.nuget\\packages\\supersimpletcp\\3.0.14\\supersimpletcp.3.0.14.nupkg.sha512"
   ],
   "logs": []
 }

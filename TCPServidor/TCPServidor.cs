@@ -1,29 +1,57 @@
-using SuperSimpleTcp;
+﻿using SuperSimpleTcp;
 using System.Text;
+using System.Drawing;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace TCPServidor
 {
     public partial class TCPServidor : Form
     {
+        /// <summary>
+        /// Construtor da classe TCPServidor.
+        /// Inicializa os componentes da interface gráfica.
+        /// </summary>
         public TCPServidor()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Evento de clique do label3.
+        /// Não possui nenhuma ação implementada.
+        /// </summary>
         private void label3_Click(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// Instância do servidor TCP.
+        /// </summary>
         SimpleTcpServer servidor;
+
+        /// <summary>
+        /// Dicionário para armazenar informações dos clientes conectados, incluindo nome e cor.
+        /// </summary>
+        private Dictionary<string, string> clientes = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Evento de clique do botão "Iniciar".
+        /// Inicia o servidor TCP, habilita o botão "Mensagem" e desabilita o botão "Iniciar".
+        /// </summary>
         private void btnIniciar_Click(object sender, EventArgs e)
         {
             servidor.Start();
-            txtInfo.Text += $"Servidor Iniciado...{Environment.NewLine}";
+            AppendText(txtInfo, $"Servidor Iniciado...{Environment.NewLine}", Color.Black);
             btnIniciar.Enabled = false;
             btnMensagem.Enabled = true;
         }
 
+        /// <summary>
+        /// Evento de carregamento do formulário.
+        /// Inicializa o servidor TCP, configura os eventos do servidor e preenche o ComboBox com as opções de cores.
+        /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
             btnMensagem.Enabled = false;
@@ -31,60 +59,172 @@ namespace TCPServidor
             servidor.Events.ClientConnected += Events_ClientConnected;
             servidor.Events.ClientDisconnected += Events_ClientDisconnected;
             servidor.Events.DataReceived += Events_DataReceived;
+
+            //Cores para cmbCor
+            cmbCor.Items.Add("Preto");
+            cmbCor.Items.Add("Azul");
+            cmbCor.Items.Add("Vermelho");
+            cmbCor.Items.Add("Verde");
+            cmbCor.Items.Add("Amarelo");
+            cmbCor.Items.Add("Rosa");
+            cmbCor.Items.Add("Laranja");
+            cmbCor.Items.Add("Marrom");
+            cmbCor.Items.Add("Cinza");
+            cmbCor.Items.Add("Violeta");
+
+            //Cor padrão "Preto"
+            cmbCor.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Evento acionado quando o servidor recebe dados de um cliente.
+        /// Processa a mensagem recebida, extraindo nome e cor do cliente, e a exibe no RichTextBox.
+        /// Reenvia a mensagem para os outros clientes conectados.
+        /// </summary>
         private void Events_DataReceived(object? sender, DataReceivedEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                string mensagem = $"{e.IpPort}: {Encoding.UTF8.GetString(e.Data)}{Environment.NewLine}";
-                txtInfo.Text += mensagem;
+                string mensagemRecebida = Encoding.UTF8.GetString(e.Data);
 
-                // Envia a mensagem para todos os clientes conectados, exceto o remetente
-                foreach (string ipPort in listClienteIP.Items)
+                // Extrair nome e cor da mensagem (se presente)
+                string nome = "";
+                Color cor = Color.Black; // Cor padrão
+                if (mensagemRecebida.StartsWith("Nome:"))
                 {
-                    if (ipPort != e.IpPort)
+                    // Mensagem de informação do cliente
+                    string[] partes = mensagemRecebida.Split(';');
+                    foreach (string parte in partes)
                     {
-                        servidor.Send(ipPort, mensagem);
+                        if (parte.StartsWith("Nome:"))
+                            nome = parte.Substring(5);
+                        else if (parte.StartsWith("Cor:"))
+                            cor = Color.FromName(parte.Substring(4));
+                    }
+
+                    clientes[e.IpPort] = $"{nome}|{cor.Name}"; // Armazena nome e cor
+                    AtualizarListaClientes();
+                }
+                else
+                {
+                    // Mensagem de chat normal
+                    string[] partesNomeCor = clientes[e.IpPort].Split('|');
+                    nome = partesNomeCor[0];
+                    cor = Color.FromName(partesNomeCor[1]); // Correção: Usa a cor do cliente
+
+                    AppendText(txtInfo, $" ● ", cor); // Círculo colorido com a cor do cliente
+                    AppendText(txtInfo, $"{nome}: {mensagemRecebida}{Environment.NewLine}", Color.Black);
+
+                    // Reenviar para outros clientes
+                    foreach (string ipPort in clientes.Keys)
+                    {
+                        if (ipPort != e.IpPort)
+                        {
+                            servidor.Send(ipPort, $" ● {nome}: {mensagemRecebida}");
+                        }
                     }
                 }
             });
         }
 
+        /// <summary>
+        /// Evento acionado quando um cliente se desconecta do servidor.
+        /// Exibe uma mensagem no RichTextBox informando a desconexão do cliente.
+        /// </summary>
         private void Events_ClientDisconnected(object? sender, ConnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtInfo.Text += $"{e.IpPort} Se desconectou...{Environment.NewLine}";
-                listClienteIP.Items.Remove(e.IpPort);
+                string[] partesNomeCor = clientes[e.IpPort].Split('|');
+                string nomeCliente = partesNomeCor[0];
+
+                AppendText(txtInfo, $"{nomeCliente} ({e.IpPort}) Se desconectou...{Environment.NewLine}", Color.Black);
+                clientes.Remove(e.IpPort);
+                AtualizarListaClientes();
             });
 
         }
 
+        /// <summary>
+        /// Evento acionado quando um cliente se conecta ao servidor.
+        /// Exibe uma mensagem no RichTextBox informando a conexão do cliente.
+        /// </summary>
         private void Events_ClientConnected(object? sender, ConnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtInfo.Text += $"{e.IpPort} Se conectou...{Environment.NewLine}";
-                listClienteIP.Items.Add(e.IpPort);
+                AppendText(txtInfo, $"{e.IpPort} Se conectou...{Environment.NewLine}", Color.Black);
             });
         }
 
+        /// <summary>
+        /// Evento de clique do botão "Mensagem".
+        /// Envia a mensagem digitada pelo servidor para todos os clientes conectados.
+        /// </summary>
         private void btnMensagem_Click(object sender, EventArgs e)
         {
             if (servidor.IsListening)
             {
-                if (!string.IsNullOrEmpty(txtMensagem.Text)) // Verifica se a mensagem n�o est� vazia
+                if (!string.IsNullOrEmpty(txtMensagem.Text))
                 {
+                    Color corServidor = Color.FromName(cmbCor.SelectedItem.ToString());
+                    AppendText(txtInfo, " ● ", corServidor); // Círculo colorido
+                    AppendText(txtInfo, $"{txtNomeServidor.Text}: {txtMensagem.Text}{Environment.NewLine}", Color.Black);
+
                     // Envia a mensagem para todos os clientes conectados
-                    foreach (string ipPort in listClienteIP.Items)
+                    foreach (string ipPort in clientes.Keys)
                     {
-                        servidor.Send(ipPort, txtMensagem.Text);
+                        servidor.Send(ipPort, $" ● {txtNomeServidor.Text}: {txtMensagem.Text}");
                     }
 
-                    txtInfo.Text += $"Servidor: {txtMensagem.Text}{Environment.NewLine}";
                     txtMensagem.Text = string.Empty;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Evento de alteração de texto do TextBox "Nome do Servidor".
+        /// Não possui nenhuma ação implementada.
+        /// </summary>
+        private void txtNomeServidor_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Evento de mudança de seleção do ComboBox "Cor".
+        /// Não possui nenhuma ação implementada.
+        /// </summary>
+        private void cmbCor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Adiciona texto ao RichTextBox com a cor especificada.
+        /// </summary>
+        /// <param name="box">RichTextBox para adicionar o texto.</param>
+        /// <param name="text">Texto a ser adicionado.</param>
+        /// <param name="color">Cor do texto.</param>
+        private void AppendText(RichTextBox box, string text, Color color)
+        {
+            box.SelectionStart = box.TextLength;
+            box.SelectionColor = color;
+            box.AppendText(text);
+            box.SelectionColor = box.ForeColor;
+        }
+
+        /// <summary>
+        /// Atualiza a ListBox com a lista de clientes conectados e seus respectivos nomes.
+        /// </summary>
+        private void AtualizarListaClientes()
+        {
+            listClienteIP.Items.Clear();
+            foreach (var cliente in clientes)
+            {
+                string[] partesNomeCor = cliente.Value.Split('|');
+                string nome = partesNomeCor[0];
+                listClienteIP.Items.Add($"{nome} ({cliente.Key})");
             }
         }
     }
