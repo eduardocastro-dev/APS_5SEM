@@ -3,9 +3,9 @@ using System.Text;
 
 namespace TCPClient
 {
-    public partial class Form1 : Form
+    public partial class TCPCliente : Form
     {
-        public Form1()
+        public TCPCliente()
         {
             InitializeComponent();
         }

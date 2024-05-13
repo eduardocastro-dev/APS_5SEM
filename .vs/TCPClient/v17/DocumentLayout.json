@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\GIT\\APS_5SEM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|d:\\git\\aps_5sem\\tcpservidor\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|d:\\git\\aps_5sem\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|d:\\git\\aps_5sem\\tcpservidor\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|d:\\git\\aps_5sem\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,27 +26,27 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPServidor\\Form1.cs",
-              "RelativeDocumentMoniker": "TCPServidor\\Form1.cs",
-              "ToolTip": "D:\\GIT\\APS_5SEM\\TCPServidor\\Form1.cs",
-              "RelativeToolTip": "TCPServidor\\Form1.cs",
-              "ViewState": "AQIAAEsAAAAAAAAAAAAIwFoAAAABAAAA",
+              "DocumentIndex": 1,
+              "Title": "TCPServidor.cs",
+              "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
+              "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
+              "ToolTip": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
+              "RelativeToolTip": "TCPServidor\\TCPServidor.cs",
+              "ViewState": "AQIAAEwAAAAAAAAAAAAjwFkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-13T01:21:21.531Z",
+              "WhenOpened": "2024-05-13T01:34:09.125Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Form1.cs [Projeto]",
-              "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPServidor\\Form1.cs",
-              "RelativeDocumentMoniker": "TCPServidor\\Form1.cs",
-              "ToolTip": "D:\\GIT\\APS_5SEM\\TCPServidor\\Form1.cs [Projeto]",
-              "RelativeToolTip": "TCPServidor\\Form1.cs [Projeto]",
+              "DocumentIndex": 0,
+              "Title": "TCPServidor.cs [Projeto]",
+              "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
+              "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
+              "ToolTip": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs [Projeto]",
+              "RelativeToolTip": "TCPServidor\\TCPServidor.cs [Projeto]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-13T01:21:14.874Z",
+              "WhenOpened": "2024-05-13T01:31:01.502Z",
               "EditorCaption": " [Projeto]"
             }
           ]
