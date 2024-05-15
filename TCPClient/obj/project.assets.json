@@ -44,19 +44,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eduar\\.nuget\\packages\\": {}
+    "C:\\Users\\eduet\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
+      "projectUniqueName": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
       "projectName": "TCPCliente",
-      "projectPath": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
-      "packagesPath": "C:\\Users\\eduar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPClient\\obj\\",
+      "projectPath": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
+      "packagesPath": "C:\\Users\\eduet\\.nuget\\packages\\",
+      "outputPath": "D:\\GIT\\APS_5SEM\\TCPClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eduar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\eduet\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

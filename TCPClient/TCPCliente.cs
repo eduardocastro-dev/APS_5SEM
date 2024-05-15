@@ -1,4 +1,4 @@
-using SuperSimpleTcp;
+Ôªøusing SuperSimpleTcp;
 using System.Text;
 
 namespace TCPClient
@@ -7,7 +7,7 @@ namespace TCPClient
     {
         /// <summary>
         /// Construtor da classe TCPCliente.
-        /// Inicializa os componentes da interface gr·fica.
+        /// Inicializa os componentes da interface gr√°fica.
         /// </summary>
         public TCPCliente()
         {
@@ -15,19 +15,19 @@ namespace TCPClient
         }
 
         /// <summary>
-        /// Inst‚ncia do cliente TCP.
+        /// Inst√¢ncia do cliente TCP.
         /// </summary>
         SimpleTcpClient cliente;
 
         /// <summary>
-        /// Evento de clique do bot„o "Conectar".
-        /// Conecta o cliente ao servidor, envia o nome e cor selecionados e habilita o bot„o "Mensagem".
+        /// Evento de clique do bot√£o "Conectar".
+        /// Conecta o cliente ao servidor, envia o nome e cor selecionados e habilita o bot√£o "Mensagem".
         /// </summary>
         private void btnConectar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtNomeCliente.Text))
             {
-                MessageBox.Show("Por Favor, insira um nome de Usu·rio", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por Favor, insira um nome de Usu√°rio", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
@@ -46,27 +46,27 @@ namespace TCPClient
         }
 
         /// <summary>
-        /// Evento de clique do bot„o "Mensagem".
+        /// Evento de clique do bot√£o "Mensagem".
         /// Envia a mensagem digitada pelo cliente ao servidor.
         /// </summary>
         private void btnMensagem_Click(object sender, EventArgs e)
         {
             if (cliente.IsConnected)
             {
-                if (!string.IsNullOrEmpty(txtMensagem.Text)) // Verifica se a mensagem n„o est· vazia.
+                if (!string.IsNullOrEmpty(txtMensagem.Text)) // Verifica se a mensagem n√£o est√° vazia.
                 {
                     string mensagemCompleta = $"{txtNomeCliente.Text}: {txtMensagem.Text}";
                     cliente.Send(mensagemCompleta);
 
-                    txtInfo.Text += $"Enviado: {mensagemCompleta}{Environment.NewLine}";
+                    AppendTextToRichTextBox(txtInfo, $" ‚óè {mensagemCompleta}{Environment.NewLine}", Color.Black);
                     txtMensagem.Text = string.Empty;
                 }
             }
         }
 
         /// <summary>
-        /// Evento de carregamento do formul·rio.
-        /// Inicializa o cliente TCP, configura os eventos do cliente e preenche o ComboBox com as opÁıes de cores.
+        /// Evento de carregamento do formul√°rio.
+        /// Inicializa o cliente TCP, configura os eventos do cliente e preenche o ComboBox com as op√ß√µes de cores.
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -88,32 +88,32 @@ namespace TCPClient
             cmbcor.Items.Add("Cinza");
             cmbcor.Items.Add("Violeta");
 
-            //Cor padr„o "Preto"
+            //Cor padr√£o "Preto"
             cmbcor.SelectedIndex = 0;
         }
 
         /// <summary>
         /// Evento acionado quando o cliente recebe dados do servidor.
-        /// Exibe a mensagem recebida no TextBox "txtInfo".
+        /// Exibe a mensagem recebida no RichTextBox "txtInfo".
         /// </summary>
         private void Events_DataReceived(object? sender, DataReceivedEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtInfo.Text += $"Recebida: {Encoding.UTF8.GetString(e.Data)}{Environment.NewLine}";
+                AppendTextToRichTextBox(txtInfo, $"{Encoding.UTF8.GetString(e.Data)}{Environment.NewLine}", txtInfo.ForeColor);
             });
 
         }
 
         /// <summary>
         /// Evento acionado quando o cliente se desconecta do servidor.
-        /// Exibe uma mensagem no TextBox "txtInfo" informando a desconex„o.
+        /// Exibe uma mensagem no RichTextBox "txtInfo" informando a desconex√£o.
         /// </summary>
         private void Events_Disconnected(object? sender, ConnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtInfo.Text += $"Conex„o encerrada... {Environment.NewLine}";
+                AppendTextToRichTextBox(txtInfo, $"Conex√£o encerrada... {Environment.NewLine}", Color.Black);
                 btnMensagem.Enabled = false;
                 btnConectar.Enabled = true;
 
@@ -123,19 +123,19 @@ namespace TCPClient
 
         /// <summary>
         /// Evento acionado quando o cliente se conecta ao servidor.
-        /// Exibe uma mensagem no TextBox "txtInfo" informando a conex„o.
+        /// Exibe uma mensagem no RichTextBox "txtInfo" informando a conex√£o.
         /// </summary>
         private void Events_Connected(object? sender, ConnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtInfo.Text += $"Conex„o estabelecida... {Environment.NewLine}";
+                AppendTextToRichTextBox(txtInfo, $"Conex√£o estabelecida... {Environment.NewLine}", Color.Black);
             });
         }
 
         /// <summary>
-        /// Evento de alteraÁ„o de texto do TextBox "IP".
-        /// N„o possui nenhuma aÁ„o implementada.
+        /// Evento de altera√ß√£o de texto do TextBox "IP".
+        /// N√£o possui nenhuma a√ß√£o implementada.
         /// </summary>
         private void txtIP_TextChanged(object sender, EventArgs e)
         {
@@ -143,8 +143,8 @@ namespace TCPClient
         }
 
         /// <summary>
-        /// Evento de mudanÁa de seleÁ„o do ComboBox "Cor".
-        /// Define a cor do texto do TextBox "txtInfo" de acordo com a cor selecionada.
+        /// Evento de mudan√ßa de sele√ß√£o do ComboBox "Cor".
+        /// Define a cor do texto do RichTextBox "txtInfo" de acordo com a cor selecionada.
         /// </summary>
         private void cmbcor_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -185,8 +185,8 @@ namespace TCPClient
         }
 
         /// <summary>
-        /// Evento de alteraÁ„o de texto do TextBox "Nome do Cliente".
-        /// N„o possui nenhuma aÁ„o implementada.
+        /// Evento de altera√ß√£o de texto do TextBox "Nome do Cliente".
+        /// N√£o possui nenhuma a√ß√£o implementada.
         /// </summary>
         private void txtNomeCliente_TextChanged(object sender, EventArgs e)
         {
@@ -205,6 +205,20 @@ namespace TCPClient
                 string mensagemInfo = $"Nome:{nome};Cor:{cor}";
                 cliente.Send(mensagemInfo);
             }
+        }
+
+        /// <summary>
+        /// Adiciona texto ao RichTextBox com a cor especificada.
+        /// </summary>
+        /// <param name="richTextBox">O RichTextBox para adicionar o texto.</param>
+        /// <param name="text">O texto para adicionar.</param>
+        /// <param name="color">A cor do texto.</param>
+        private void AppendTextToRichTextBox(RichTextBox richTextBox, string text, Color color)
+        {
+            richTextBox.SelectionStart = richTextBox.TextLength;
+            richTextBox.SelectionColor = color;
+            richTextBox.AppendText(text);
+            richTextBox.SelectionColor = richTextBox.ForeColor;
         }
     }
 }

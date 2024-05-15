@@ -31,7 +31,6 @@
             label1 = new Label();
             txtIP = new TextBox();
             btnConectar = new Button();
-            txtInfo = new TextBox();
             btnMensagem = new Button();
             txtMensagem = new TextBox();
             label2 = new Label();
@@ -39,6 +38,7 @@
             txtNomeCliente = new TextBox();
             label4 = new Label();
             cmbcor = new ComboBox();
+            txtInfo = new RichTextBox();
             SuspendLayout();
             // 
             // label1
@@ -70,17 +70,6 @@
             btnConectar.Text = "Conectar-se";
             btnConectar.UseVisualStyleBackColor = true;
             btnConectar.Click += btnConectar_Click;
-            // 
-            // txtInfo
-            // 
-            txtInfo.Location = new Point(103, 40);
-            txtInfo.Margin = new Padding(3, 2, 3, 2);
-            txtInfo.Multiline = true;
-            txtInfo.Name = "txtInfo";
-            txtInfo.ReadOnly = true;
-            txtInfo.ScrollBars = ScrollBars.Both;
-            txtInfo.Size = new Size(480, 252);
-            txtInfo.TabIndex = 3;
             // 
             // btnMensagem
             // 
@@ -145,11 +134,20 @@
             cmbcor.TabIndex = 10;
             cmbcor.SelectedIndexChanged += cmbcor_SelectedIndexChanged;
             // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(103, 44);
+            txtInfo.Name = "txtInfo";
+            txtInfo.Size = new Size(480, 247);
+            txtInfo.TabIndex = 11;
+            txtInfo.Text = "";
+            // 
             // TCPCliente
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(615, 356);
+            Controls.Add(txtInfo);
             Controls.Add(cmbcor);
             Controls.Add(label4);
             Controls.Add(txtNomeCliente);
@@ -157,7 +155,6 @@
             Controls.Add(txtMensagem);
             Controls.Add(label2);
             Controls.Add(btnMensagem);
-            Controls.Add(txtInfo);
             Controls.Add(btnConectar);
             Controls.Add(txtIP);
             Controls.Add(label1);
@@ -176,7 +173,6 @@
         private Label label1;
         private TextBox txtIP;
         private Button btnConectar;
-        private TextBox txtInfo;
         private Button btnMensagem;
         private TextBox txtMensagem;
         private Label label2;
@@ -184,5 +180,6 @@
         private TextBox txtNomeCliente;
         private Label label4;
         private ComboBox cmbcor;
+        private RichTextBox txtInfo;
     }
 }

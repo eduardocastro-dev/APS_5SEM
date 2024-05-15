@@ -102,7 +102,20 @@ namespace TCPServidor
                             cor = Color.FromName(parte.Substring(4));
                     }
 
-                    clientes[e.IpPort] = $"{nome}|{cor.Name}"; // Armazena nome e cor
+                    // Verifica se o IP já está no dicionário
+                    if (clientes.ContainsKey(e.IpPort))
+                    {
+                        // Atualiza o nome do cliente no dicionário
+                        clientes[e.IpPort] = $"{nome}|{cor.Name}";
+                    }
+                    else
+                    {
+                        // Adiciona o cliente ao dicionário
+                        clientes.Add(e.IpPort, $"{nome}|{cor.Name}");
+                    }
+
+                    // Exibe a mensagem de conexão após salvar as informações do cliente
+                    AppendText(txtInfo, $"{nome} Se conectou...{Environment.NewLine}", Color.Black);
                     AtualizarListaClientes();
                 }
                 else
@@ -113,14 +126,14 @@ namespace TCPServidor
                     cor = Color.FromName(partesNomeCor[1]); // Correção: Usa a cor do cliente
 
                     AppendText(txtInfo, $" ● ", cor); // Círculo colorido com a cor do cliente
-                    AppendText(txtInfo, $"{nome}: {mensagemRecebida}{Environment.NewLine}", Color.Black);
+                    AppendText(txtInfo, $"{mensagemRecebida}{Environment.NewLine}", Color.Black);
 
                     // Reenviar para outros clientes
                     foreach (string ipPort in clientes.Keys)
                     {
                         if (ipPort != e.IpPort)
                         {
-                            servidor.Send(ipPort, $" ● {nome}: {mensagemRecebida}");
+                            servidor.Send(ipPort, $" {nome}: {mensagemRecebida}");
                         }
                     }
                 }
@@ -138,7 +151,7 @@ namespace TCPServidor
                 string[] partesNomeCor = clientes[e.IpPort].Split('|');
                 string nomeCliente = partesNomeCor[0];
 
-                AppendText(txtInfo, $"{nomeCliente} ({e.IpPort}) Se desconectou...{Environment.NewLine}", Color.Black);
+                AppendText(txtInfo, $"{nomeCliente} Se desconectou...{Environment.NewLine}", Color.Black);
                 clientes.Remove(e.IpPort);
                 AtualizarListaClientes();
             });
@@ -151,10 +164,7 @@ namespace TCPServidor
         /// </summary>
         private void Events_ClientConnected(object? sender, ConnectionEventArgs e)
         {
-            this.Invoke((MethodInvoker)delegate
-            {
-                AppendText(txtInfo, $"{e.IpPort} Se conectou...{Environment.NewLine}", Color.Black);
-            });
+
         }
 
         /// <summary>

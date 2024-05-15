@@ -44,19 +44,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eduar\\.nuget\\packages\\": {}
+    "C:\\Users\\eduet\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPServidor\\TCPServidor.csproj",
+      "projectUniqueName": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.csproj",
       "projectName": "TCPServidor",
-      "projectPath": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPServidor\\TCPServidor.csproj",
-      "packagesPath": "C:\\Users\\eduar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eduar\\Documents\\GitHub\\APS_5SEM\\TCPServidor\\obj\\",
+      "projectPath": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.csproj",
+      "packagesPath": "C:\\Users\\eduet\\.nuget\\packages\\",
+      "outputPath": "D:\\GIT\\APS_5SEM\\TCPServidor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eduar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\eduet\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
