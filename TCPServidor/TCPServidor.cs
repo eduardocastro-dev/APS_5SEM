@@ -61,16 +61,17 @@ namespace TCPServidor
             servidor.Events.DataReceived += Events_DataReceived;
 
             //Cores para cmbCor
-            cmbCor.Items.Add("Preto");
-            cmbCor.Items.Add("Azul");
-            cmbCor.Items.Add("Vermelho");
-            cmbCor.Items.Add("Verde");
-            cmbCor.Items.Add("Amarelo");
-            cmbCor.Items.Add("Rosa");
-            cmbCor.Items.Add("Laranja");
-            cmbCor.Items.Add("Marrom");
-            cmbCor.Items.Add("Cinza");
-            cmbCor.Items.Add("Violeta");
+            cmbCor.Items.Add("Black");
+            cmbCor.Items.Add("Blue");
+            cmbCor.Items.Add("Red");
+            cmbCor.Items.Add("Green");
+            cmbCor.Items.Add("Yellow");
+            cmbCor.Items.Add("Pink");
+            cmbCor.Items.Add("Orange");
+            cmbCor.Items.Add("Brown");
+            cmbCor.Items.Add("Gray");
+            cmbCor.Items.Add("Purple");
+
 
             //Cor padrão "Preto"
             cmbCor.SelectedIndex = 0;

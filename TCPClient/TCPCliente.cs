@@ -58,7 +58,12 @@ namespace TCPClient
                     string mensagemCompleta = $"{txtNomeCliente.Text}: {txtMensagem.Text}";
                     cliente.Send(mensagemCompleta);
 
-                    AppendTextToRichTextBox(txtInfo, $" ● {mensagemCompleta}{Environment.NewLine}", Color.Black);
+                    // Obtém a cor selecionada no ComboBox
+                    Color corSelecionada = GetColorFromComboBox(cmbcor.SelectedItem.ToString());
+
+                    // Adiciona a mensagem ao RichTextBox com a cor selecionada no ●
+                    AppendTextToRichTextBox(txtInfo, $" ● ", corSelecionada);
+                    AppendTextToRichTextBox(txtInfo, $"{mensagemCompleta}{Environment.NewLine}", txtInfo.ForeColor); // Mantém a cor do texto padrão
                     txtMensagem.Text = string.Empty;
                 }
             }
@@ -77,16 +82,18 @@ namespace TCPClient
             btnMensagem.Enabled = false;
 
             //Cores para cmbCor
-            cmbcor.Items.Add("Preto");
-            cmbcor.Items.Add("Azul");
-            cmbcor.Items.Add("Vermelho");
-            cmbcor.Items.Add("Verde");
-            cmbcor.Items.Add("Amarelo");
-            cmbcor.Items.Add("Rosa");
-            cmbcor.Items.Add("Laranja");
-            cmbcor.Items.Add("Marrom");
-            cmbcor.Items.Add("Cinza");
-            cmbcor.Items.Add("Violeta");
+            cmbcor.Items.Add("Black");
+            cmbcor.Items.Add("Blue");
+            cmbcor.Items.Add("Red");
+            cmbcor.Items.Add("Green");
+            cmbcor.Items.Add("Yellow");
+            cmbcor.Items.Add("Pink");
+            cmbcor.Items.Add("Orange");
+            cmbcor.Items.Add("Brown");
+            cmbcor.Items.Add("Gray");
+            cmbcor.Items.Add("Purple");
+                
+
 
             //Cor padrão "Preto"
             cmbcor.SelectedIndex = 0;
@@ -204,6 +211,30 @@ namespace TCPClient
                 string cor = cmbcor.SelectedItem.ToString();
                 string mensagemInfo = $"Nome:{nome};Cor:{cor}";
                 cliente.Send(mensagemInfo);
+            }
+        }
+
+        /// <summary>
+        /// Adiciona texto ao RichTextBox com a cor especificada.
+        /// </summary>
+        /// <param name="richTextBox">O RichTextBox para adicionar o texto.</param>
+        /// <param name="text">O texto para adicionar.</param>
+        /// <param name="color">A cor do texto.</param>
+        private Color GetColorFromComboBox(string corString)
+        {
+            switch (corString)
+            {
+                case "Black": return Color.Black;
+                case "Blue": return Color.Blue;
+                case "Red": return Color.Red;
+                case "Green": return Color.Green;
+                case "Yellow": return Color.Yellow;
+                case "Pink": return Color.Pink;
+                case "Orange": return Color.Orange;
+                case "Brown": return Color.Brown;
+                case "Gray": return Color.Gray;
+                case "Purple": return Color.Purple;
+                default: return Color.Black; // Cor padrão se a string não for reconhecida
             }
         }
 
