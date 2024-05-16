@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\GIT\\APS_5SEM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|D:\\GIT\\APS_5SEM\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|d:\\git\\aps_5sem\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|d:\\git\\aps_5sem\\tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|solutionrelative:tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|D:\\GIT\\APS_5SEM\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|D:\\GIT\\APS_5SEM\\tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|solutionrelative:tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|D:\\GIT\\APS_5SEM\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|D:\\GIT\\APS_5SEM\\tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|solutionrelative:tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -52,14 +52,14 @@
               "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
               "ToolTip": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
               "RelativeToolTip": "TCPServidor\\TCPServidor.cs",
-              "ViewState": "AQIAAA8AAAAAAAAAAAAIwM8AAAAAAAAA",
+              "ViewState": "AQIAAIMBAAAAAAAAAAAQwJQBAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-15T12:41:15.641Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "TCPServidor.cs [Projeto]",
               "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
               "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
@@ -72,24 +72,24 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "TCPCliente.cs [Design]",
+              "Title": "TCPCliente.cs [Projeto]",
               "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.cs",
               "RelativeDocumentMoniker": "TCPClient\\TCPCliente.cs",
-              "ToolTip": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.cs [Design]",
-              "RelativeToolTip": "TCPClient\\TCPCliente.cs [Design]",
+              "ToolTip": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.cs [Projeto]",
+              "RelativeToolTip": "TCPClient\\TCPCliente.cs [Projeto]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-13T13:49:32.533Z",
-              "EditorCaption": " [Design]"
+              "EditorCaption": " [Projeto]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "TCPCliente.cs",
               "DocumentMoniker": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.cs",
               "RelativeDocumentMoniker": "TCPClient\\TCPCliente.cs",
               "ToolTip": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.cs",
               "RelativeToolTip": "TCPClient\\TCPCliente.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAUwEIBAAABAAAA",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAgwEIBAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-13T13:51:02.113Z",
               "EditorCaption": ""
