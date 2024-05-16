@@ -1,2 +1,59 @@
 Pacote
 SuperSimpleTcp
+
+- Formulário "TCPServidor":
+
+-Variáveis:
+servidor: Um objeto SimpleTcpServer que representa o servidor TCP.
+clientes: Um dicionário que armazena informações sobre os clientes conectados, como nome e cor.
+
+- Eventos:
+btnIniciar_Click: Inicia o servidor e habilita a caixa de texto para enviar mensagens.
+Form1_Load: Configura a interface gráfica, incluindo a lista de cores e o endereço IP do servidor.
+Events_DataReceived: Processa as mensagens recebidas dos clientes, exibindo-as na interface gráfica e reenviando-as para os outros clientes.
+Events_ClientDisconnected: Remove o cliente da lista de clientes conectados e exibe uma mensagem na interface gráfica.
+Events_ClientConnected: Não possui código implementado, mas pode ser usado para executar ações adicionais quando um cliente se conecta.
+btnMensagem_Click: Envia uma mensagem para todos os clientes conectados.
+txtNomeServidor_TextChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando o nome do servidor é alterado.
+cmbCor_SelectedIndexChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando a cor do servidor é alterada.
+
+- Métodos:
+AppendText: Adiciona texto à caixa de texto com uma cor específica.
+AtualizarListaClientes: Atualiza a lista de clientes conectados na interface gráfica.
+GetIp: Retorna o endereço IP da máquina local.
+
+- Funcionalidades:
+O servidor escuta por conexões na porta 9000.
+Quando um cliente se conecta, o servidor solicita o nome e a cor do cliente.
+As mensagens dos clientes são exibidas na interface gráfica, junto com o nome e a cor do cliente.
+O servidor reenvia as mensagens dos clientes para todos os outros clientes conectados.
+A interface gráfica permite que o servidor envie mensagens para todos os clientes conectados.
+
+
+- Formulário "TCPCliente":
+
+- Variáveis:
+cliente: Um objeto SimpleTcpClient que representa a conexão do cliente com o servidor.
+
+- Eventos:
+btnConectar_Click: Cria uma nova conexão com o servidor, envia o nome e a cor do cliente e habilita a caixa de texto para enviar mensagens.
+btnMensagem_Click: Envia uma mensagem para o servidor.
+Form1_Load: Configura a interface gráfica, incluindo a lista de cores e as configurações iniciais.
+Events_DataReceived: Processa as mensagens recebidas do servidor, exibindo-as na interface gráfica.
+Events_Disconnected: Exibe uma mensagem na interface gráfica informando que a conexão foi encerrada.
+Events_Connected: Exibe uma mensagem na interface gráfica informando que a conexão foi estabelecida.
+txtIP_TextChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando o endereço IP é alterado.
+cmbcor_SelectedIndexChanged: Define a cor do texto na caixa de texto "txtInfo" de acordo com a cor selecionada.
+txtNomeCliente_TextChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando o nome do cliente é alterado.
+
+- Métodos:
+EnviarNomeECor: Envia o nome e a cor do cliente para o servidor.
+GetColorFromComboBox: Retorna a cor correspondente à seleção na caixa de combinação "cmbcor".
+AppendTextToRichTextBox: Adiciona texto à caixa de texto "richTextBox" com uma cor específica.
+
+- Funcionalidades:
+O cliente permite que o usuário digite um nome de usuário e o endereço IP do servidor.
+O cliente tenta se conectar ao servidor na porta 9000.
+Quando a conexão é estabelecida, o cliente envia o nome e a cor do usuário para o servidor.
+O cliente pode enviar mensagens para o servidor, que são exibidas na interface gráfica.
+O cliente exibe as mensagens recebidas do servidor na interface gráfica.

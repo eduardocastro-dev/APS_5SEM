@@ -1,87 +1,107 @@
 ﻿using SuperSimpleTcp;
 using System.Text;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace TCPClient
 {
     public partial class TCPCliente : Form
     {
-        /// <summary>
-        /// Construtor da classe TCPCliente.
-        /// Inicializa os componentes da interface gráfica.
-        /// </summary>
         public TCPCliente()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Instância do cliente TCP.
-        /// </summary>
+        // Variável para armazenar a conexão do cliente com o servidor
         SimpleTcpClient cliente;
 
-        /// <summary>
-        /// Evento de clique do botão "Conectar".
-        /// Conecta o cliente ao servidor, envia o nome e cor selecionados e habilita o botão "Mensagem".
-        /// </summary>
+        // Evento que ocorre quando o botão "Conectar" é clicado
         private void btnConectar_Click(object sender, EventArgs e)
         {
+            // Verifica se o usuário digitou um nome de usuário
             if (string.IsNullOrEmpty(txtNomeCliente.Text))
             {
+                // Exibe uma mensagem de erro se o nome de usuário estiver vazio
                 MessageBox.Show("Por Favor, insira um nome de Usuário", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Retorna para evitar continuar a execução do código
                 return;
             }
+
+            // Verifica se o usuário digitou o endereço IP do servidor
+            if (string.IsNullOrEmpty(txtIP.Text))
+            {
+                // Exibe uma mensagem de erro se o endereço IP estiver vazio
+                MessageBox.Show("Por Favor, insira o endereço IP do servidor", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Retorna para evitar continuar a execução do código
+                return;
+            }
+
             try
             {
+                // Cria uma nova conexão com o servidor usando o endereço IP e a porta 9000
+                cliente = new(txtIP.Text + ":9000");
+
+                // Define os eventos da conexão:
+                // - Events_Connected: Ocorre quando a conexão é estabelecida
+                // - Events_Disconnected: Ocorre quando a conexão é encerrada
+                // - Events_DataReceived: Ocorre quando o cliente recebe dados do servidor
+                cliente.Events.Connected += Events_Connected;
+                cliente.Events.Disconnected += Events_Disconnected;
+                cliente.Events.DataReceived += Events_DataReceived;
+
+                // Tenta estabelecer a conexão com o servidor
                 cliente.Connect();
-                //Envia dados do cliente ao conectar
+                // Envia o nome e a cor do cliente para o servidor
                 EnviarNomeECor();
+                // Habilita o botão "Mensagem" para enviar mensagens
                 btnMensagem.Enabled = true;
+                // Desabilita o botão "Conectar" para evitar conexões duplicadas
                 btnConectar.Enabled = false;
             }
             catch (Exception ex)
             {
+                // Exibe uma mensagem de erro se a conexão falhar
                 MessageBox.Show(ex.Message, "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
-        /// <summary>
-        /// Evento de clique do botão "Mensagem".
-        /// Envia a mensagem digitada pelo cliente ao servidor.
-        /// </summary>
+        // Evento que ocorre quando o botão "Mensagem" é clicado
         private void btnMensagem_Click(object sender, EventArgs e)
         {
+            // Verifica se a conexão com o servidor está ativa
             if (cliente.IsConnected)
             {
-                if (!string.IsNullOrEmpty(txtMensagem.Text)) // Verifica se a mensagem não está vazia.
+                // Verifica se o usuário digitou uma mensagem
+                if (!string.IsNullOrEmpty(txtMensagem.Text))
                 {
-                    string mensagemCompleta = $"{txtNomeCliente.Text}: {txtMensagem.Text}";
+                    // Obtem a cor selecionada pelo usuário
+                    string corEnv = cmbcor.SelectedItem.ToString();
+                    // Cria a mensagem completa com o nome do cliente, a cor e a mensagem
+                    string mensagemCompleta = $"●:{corEnv}:{txtNomeCliente.Text}:{txtMensagem.Text}";
+                    // Envia a mensagem para o servidor
                     cliente.Send(mensagemCompleta);
 
-                    // Obtém a cor selecionada no ComboBox
+                    // Obtem a cor correspondente à seleção do usuário
                     Color corSelecionada = GetColorFromComboBox(cmbcor.SelectedItem.ToString());
-
-                    // Adiciona a mensagem ao RichTextBox com a cor selecionada no ●
+                    // Exibe o círculo com a cor da mensagem na caixa de texto "txtInfo"
                     AppendTextToRichTextBox(txtInfo, $" ● ", corSelecionada);
-                    AppendTextToRichTextBox(txtInfo, $"{mensagemCompleta}{Environment.NewLine}", txtInfo.ForeColor); // Mantém a cor do texto padrão
+                    // Exibe a mensagem do cliente na caixa de texto "txtInfo"
+                    AppendTextToRichTextBox(txtInfo, $"{txtNomeCliente.Text}: {txtMensagem.Text}{Environment.NewLine}", Color.Black);
+                    // Limpa a caixa de texto "txtMensagem"
                     txtMensagem.Text = string.Empty;
                 }
             }
         }
 
-        /// <summary>
-        /// Evento de carregamento do formulário.
-        /// Inicializa o cliente TCP, configura os eventos do cliente e preenche o ComboBox com as opções de cores.
-        /// </summary>
+        // Evento que ocorre quando o formulário é carregado
         private void Form1_Load(object sender, EventArgs e)
         {
-            cliente = new(txtIP.Text);
-            cliente.Events.Connected += Events_Connected;
-            cliente.Events.Disconnected += Events_Disconnected;
-            cliente.Events.DataReceived += Events_DataReceived;
+            // A lógica de conexão foi movida para o btnConectar_Click
+            // cliente = new("192.168.0.110:9000"); // Define IP e porta padrão
+            // Desabilita o botão "Mensagem" até que a conexão seja estabelecida
             btnMensagem.Enabled = false;
 
-            //Cores para cmbCor
+            // Adiciona as cores disponíveis na caixa de combinação "cmbcor"
             cmbcor.Items.Add("Black");
             cmbcor.Items.Add("Blue");
             cmbcor.Items.Add("Red");
@@ -92,136 +112,137 @@ namespace TCPClient
             cmbcor.Items.Add("Brown");
             cmbcor.Items.Add("Gray");
             cmbcor.Items.Add("Purple");
-                
 
-
-            //Cor padrão "Preto"
+            // Define a cor padrão da caixa de combinação como "Preto"
             cmbcor.SelectedIndex = 0;
         }
 
-        /// <summary>
-        /// Evento acionado quando o cliente recebe dados do servidor.
-        /// Exibe a mensagem recebida no RichTextBox "txtInfo".
-        /// </summary>
+        // Evento que ocorre quando o cliente recebe dados do servidor
         private void Events_DataReceived(object? sender, DataReceivedEventArgs e)
         {
+            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
             this.Invoke((MethodInvoker)delegate
             {
-                AppendTextToRichTextBox(txtInfo, $"{Encoding.UTF8.GetString(e.Data)}{Environment.NewLine}", txtInfo.ForeColor);
-            });
+                // Decodifica a mensagem recebida do servidor
+                string mensagemRecebida = Encoding.UTF8.GetString(e.Data);
+                // Divide a mensagem em partes usando o caractere ':' como separador
+                string[] partesMensagem = mensagemRecebida.Split(':');
 
+                // Verifica se a mensagem possui pelo menos 4 partes
+                if (partesMensagem.Length >= 4)
+                {
+                    // Extrai a cor do círculo, o nome do servidor e a mensagem
+                    string corCirculo = partesMensagem[1].TrimStart('●');
+                    string nomeServidor = partesMensagem[2].Trim();
+                    string mensagem = partesMensagem[3].Trim();
+
+                    // Define a cor do texto como preta
+                    Color corTexto = Color.Black;
+                    // Exibe o círculo com a cor da mensagem na caixa de texto "txtInfo"
+                    AppendTextToRichTextBox(txtInfo, $" ● ", Color.FromName(corCirculo));
+                    // Exibe a mensagem do servidor na caixa de texto "txtInfo"
+                    AppendTextToRichTextBox(txtInfo, $"{nomeServidor}: {mensagem}{Environment.NewLine}", corTexto);
+                }
+            });
         }
 
-        /// <summary>
-        /// Evento acionado quando o cliente se desconecta do servidor.
-        /// Exibe uma mensagem no RichTextBox "txtInfo" informando a desconexão.
-        /// </summary>
+        // Evento que ocorre quando a conexão com o servidor é encerrada
         private void Events_Disconnected(object? sender, ConnectionEventArgs e)
         {
+            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
             this.Invoke((MethodInvoker)delegate
             {
+                // Exibe uma mensagem na caixa de texto "txtInfo" informando que a conexão foi encerrada
                 AppendTextToRichTextBox(txtInfo, $"Conexão encerrada... {Environment.NewLine}", Color.Black);
+                // Desabilita o botão "Mensagem"
                 btnMensagem.Enabled = false;
+                // Habilita o botão "Conectar"
                 btnConectar.Enabled = true;
-
             });
-
         }
 
-        /// <summary>
-        /// Evento acionado quando o cliente se conecta ao servidor.
-        /// Exibe uma mensagem no RichTextBox "txtInfo" informando a conexão.
-        /// </summary>
+        // Evento que ocorre quando a conexão com o servidor é estabelecida
         private void Events_Connected(object? sender, ConnectionEventArgs e)
         {
+            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
             this.Invoke((MethodInvoker)delegate
             {
+                // Exibe uma mensagem na caixa de texto "txtInfo" informando que a conexão foi estabelecida
                 AppendTextToRichTextBox(txtInfo, $"Conexão estabelecida... {Environment.NewLine}", Color.Black);
             });
         }
 
-        /// <summary>
-        /// Evento de alteração de texto do TextBox "IP".
-        /// Não possui nenhuma ação implementada.
-        /// </summary>
+        // Evento que ocorre quando o texto na caixa de texto "txtIP" é alterado
         private void txtIP_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        /// <summary>
-        /// Evento de mudança de seleção do ComboBox "Cor".
-        /// Define a cor do texto do RichTextBox "txtInfo" de acordo com a cor selecionada.
-        /// </summary>
+        // Evento que ocorre quando a seleção na caixa de combinação "cmbcor" é alterada
         private void cmbcor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Define a cor da mensagem do cliente
+            // Define a cor do texto na caixa de texto "txtInfo" de acordo com a cor selecionada
             switch (cmbcor.SelectedItem.ToString())
             {
-                case "Preto":
+                case "Black":
                     txtInfo.ForeColor = Color.Black;
                     break;
-                case "Azul":
+                case "Blue":
                     txtInfo.ForeColor = Color.Blue;
                     break;
-                case "Vermelho":
+                case "Red":
                     txtInfo.ForeColor = Color.Red;
                     break;
-                case "Verde":
+                case "Green":
                     txtInfo.ForeColor = Color.Green;
                     break;
-                case "Amarelo":
+                case "Yellow":
                     txtInfo.ForeColor = Color.Yellow;
                     break;
-                case "Rosa":
+                case "Pink":
                     txtInfo.ForeColor = Color.Pink;
                     break;
-                case "Laranja":
+                case "Orange":
                     txtInfo.ForeColor = Color.Orange;
                     break;
-                case "Marrom":
+                case "Brown":
                     txtInfo.ForeColor = Color.Brown;
                     break;
-                case "Cinza":
+                case "Gray":
                     txtInfo.ForeColor = Color.Gray;
                     break;
-                case "Violeta":
+                case "Purple":
                     txtInfo.ForeColor = Color.Purple;
                     break;
             }
         }
 
-        /// <summary>
-        /// Evento de alteração de texto do TextBox "Nome do Cliente".
-        /// Não possui nenhuma ação implementada.
-        /// </summary>
+        // Evento que ocorre quando o texto na caixa de texto "txtNomeCliente" é alterado
         private void txtNomeCliente_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        /// <summary>
-        /// Envia o nome e a cor selecionados pelo cliente para o servidor.
-        /// </summary>
+        // Método para enviar o nome e a cor do cliente para o servidor
         private void EnviarNomeECor()
         {
+            // Verifica se a conexão com o servidor está ativa
             if (cliente.IsConnected)
             {
+                // Obtem o nome do cliente e a cor selecionada
                 string nome = txtNomeCliente.Text;
                 string cor = cmbcor.SelectedItem.ToString();
+                // Cria a mensagem com o nome e a cor
                 string mensagemInfo = $"Nome:{nome};Cor:{cor}";
+                // Envia a mensagem para o servidor
                 cliente.Send(mensagemInfo);
             }
         }
 
-        /// <summary>
-        /// Adiciona texto ao RichTextBox com a cor especificada.
-        /// </summary>
-        /// <param name="richTextBox">O RichTextBox para adicionar o texto.</param>
-        /// <param name="text">O texto para adicionar.</param>
-        /// <param name="color">A cor do texto.</param>
+        // Método para obter a cor correspondente à seleção na caixa de combinação "cmbcor"
         private Color GetColorFromComboBox(string corString)
         {
+            // Retorna a cor correspondente à string da cor
             switch (corString)
             {
                 case "Black": return Color.Black;
@@ -234,16 +255,11 @@ namespace TCPClient
                 case "Brown": return Color.Brown;
                 case "Gray": return Color.Gray;
                 case "Purple": return Color.Purple;
-                default: return Color.Black; // Cor padrão se a string não for reconhecida
+                default: return Color.Black;
             }
         }
 
-        /// <summary>
-        /// Adiciona texto ao RichTextBox com a cor especificada.
-        /// </summary>
-        /// <param name="richTextBox">O RichTextBox para adicionar o texto.</param>
-        /// <param name="text">O texto para adicionar.</param>
-        /// <param name="color">A cor do texto.</param>
+        // Método para adicionar texto à caixa de texto "richTextBox" com uma cor específica
         private void AppendTextToRichTextBox(RichTextBox richTextBox, string text, Color color)
         {
             richTextBox.SelectionStart = richTextBox.TextLength;

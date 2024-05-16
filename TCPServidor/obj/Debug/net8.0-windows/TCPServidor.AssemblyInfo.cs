@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TCPServidor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7fbeac32fcbd1a74c5d535a537b959b611e0f48")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+218986e5f96f8e4c3d79d8523d5a685ca53e591d")]
 [assembly: System.Reflection.AssemblyProductAttribute("TCPServidor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TCPServidor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

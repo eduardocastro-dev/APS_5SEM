@@ -1,4 +1,5 @@
-﻿namespace TCPServidor
+﻿
+namespace TCPServidor
 {
     partial class TCPServidor
     {
@@ -48,18 +49,18 @@
             label1.AutoSize = true;
             label1.Location = new Point(24, 18);
             label1.Name = "label1";
-            label1.Size = new Size(53, 15);
+            label1.Size = new Size(66, 15);
             label1.TabIndex = 0;
-            label1.Text = "Servidor:";
+            label1.Text = "Servidor IP:";
             // 
             // txtIP
             // 
+            txtIP.Enabled = false;
             txtIP.Location = new Point(103, 16);
             txtIP.Margin = new Padding(3, 2, 3, 2);
             txtIP.Name = "txtIP";
             txtIP.Size = new Size(193, 23);
             txtIP.TabIndex = 1;
-            txtIP.Text = "127.0.0.1:9000";
             // 
             // btnIniciar
             // 
@@ -190,6 +191,11 @@
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

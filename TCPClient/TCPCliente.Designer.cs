@@ -57,7 +57,6 @@
             txtIP.Name = "txtIP";
             txtIP.Size = new Size(163, 23);
             txtIP.TabIndex = 1;
-            txtIP.Text = "127.0.0.1:9000";
             txtIP.TextChanged += txtIP_TextChanged;
             // 
             // btnConectar
