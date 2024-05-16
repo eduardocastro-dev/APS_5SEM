@@ -52,7 +52,7 @@
               "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
               "ToolTip": "D:\\GIT\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
               "RelativeToolTip": "TCPServidor\\TCPServidor.cs",
-              "ViewState": "AQIAAMsAAAAAAAAAAAAuwNgAAAAaAAAA",
+              "ViewState": "AQIAAB4BAAAAAAAAAAAAwFEBAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-15T12:41:15.641Z",
               "EditorCaption": ""
@@ -77,8 +77,7 @@
               "ToolTip": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.cs [Projeto]",
               "RelativeToolTip": "TCPClient\\TCPCliente.cs [Projeto]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-13T13:49:32.533Z",
-              "EditorCaption": " [Projeto]"
+              "WhenOpened": "2024-05-13T13:49:32.533Z"
             },
             {
               "$type": "Document",
@@ -90,8 +89,7 @@
               "RelativeToolTip": "TCPClient\\TCPCliente.cs",
               "ViewState": "AQIAAMYAAAAAAAAAAAAkwDUBAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-13T13:51:02.113Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-13T13:51:02.113Z"
             }
           ]
         }

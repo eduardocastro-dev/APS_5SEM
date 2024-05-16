@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TCPServidor
@@ -19,7 +20,7 @@ namespace TCPServidor
         // Variáveis para o servidor e a lista de clientes conectados
         private Socket _serverSocket;
         private List<Socket> _clientSockets = new List<Socket>();
-        private Dictionary<string, string> clientes = new Dictionary<string, string>();
+        private Dictionary<string, Tuple<Socket, string>> clientes = new Dictionary<string, Tuple<Socket, string>>();
 
         // Evento para quando o botão "Iniciar" é clicado
         private void btnIniciar_Click(object sender, EventArgs e)
@@ -142,7 +143,7 @@ namespace TCPServidor
                     // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
                     this.Invoke((MethodInvoker)delegate
                     {
-                        ProcessMessage(mensagemRecebida, clientSocket.RemoteEndPoint.ToString());
+                        ProcessMessage(mensagemRecebida, clientSocket.RemoteEndPoint.ToString(), clientSocket);
                     });
                 }
             }
@@ -153,7 +154,7 @@ namespace TCPServidor
         }
 
         // Método para processar a mensagem recebida
-        private void ProcessMessage(string mensagemRecebida, string ipPort)
+        private void ProcessMessage(string mensagemRecebida, string ipPort, Socket clientSocket)
         {
             string nome = "";
             Color cor = Color.Black;
@@ -178,12 +179,12 @@ namespace TCPServidor
                 // Se o cliente já estiver na lista de clientes, atualiza as informações
                 if (clientes.ContainsKey(ipPort))
                 {
-                    clientes[ipPort] = $"{nome}|{cor.Name}";
+                    clientes[ipPort] = Tuple.Create(clientSocket, $"{nome}|{cor.Name}");
                 }
                 // Se o cliente não estiver na lista, adiciona-o
                 else
                 {
-                    clientes.Add(ipPort, $"{nome}|{cor.Name}");
+                    clientes.Add(ipPort, Tuple.Create(clientSocket, $"{nome}|{cor.Name}"));
                 }
 
                 // Exibe uma mensagem na caixa de texto informando que o cliente se conectou
@@ -195,7 +196,7 @@ namespace TCPServidor
             {
                 // Se a mensagem não começar com "Nome:", significa que é uma mensagem comum
                 // Obtem o nome e a cor do cliente a partir da lista de clientes
-                string[] partesNomeCor = clientes[ipPort].Split('|');
+                string[] partesNomeCor = clientes[ipPort].Item2.Split('|');
                 nome = partesNomeCor[0];
                 cor = Color.FromName(partesNomeCor[1]);
 
@@ -214,31 +215,16 @@ namespace TCPServidor
                 AppendText(txtInfo, $"{nome}: {mensagem}{Environment.NewLine}", Color.Black);
 
                 // Reenvia a mensagem para todos os clientes conectados, exceto o cliente que a enviou
-                foreach (Socket client in _clientSockets)
+                foreach (var cliente in clientes.Keys)
                 {
-                    if (client != _clientSockets[0])
+                    if (cliente != ipPort)
                     {
+                        Socket socket = clientes[cliente].Item1;
+
                         string mensagemCompleta = $"●:{cor.Name}:{nome}:{mensagem}";
-                        Send(client, mensagemCompleta);
+                        Send(socket, mensagemCompleta);
                     }
                 }
-            }
-        }
-
-        // Método para enviar uma mensagem para um cliente
-        private void Send(Socket clientSocket, string message)
-        {
-            try
-            {
-                // Converte a mensagem para bytes
-                byte[] data = Encoding.UTF8.GetBytes(message);
-
-                // Envia a mensagem para o cliente
-                clientSocket.Send(data);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao enviar mensagem: {ex.Message}");
             }
         }
 
@@ -264,9 +250,11 @@ namespace TCPServidor
                     string corEnv = cmbCor.Text;
 
                     // Envia a mensagem para todos os clientes conectados
-                    foreach (Socket client in _clientSockets)
+                    foreach (var cliente in clientes.Keys)
                     {
-                        Send(client, $"●:{corEnv}:{txtNomeServidor.Text}:{txtMensagem.Text}");
+                        Socket socket = clientes[cliente].Item1;
+
+                        Send(socket, $"●:{corEnv}:{txtNomeServidor.Text}:{txtMensagem.Text}");
                     }
 
                     // Limpa a caixa de texto de mensagem
@@ -306,7 +294,7 @@ namespace TCPServidor
             foreach (var cliente in clientes)
             {
                 // Obtem o nome do cliente a partir da lista de clientes
-                string[] partesNomeCor = cliente.Value.Split('|');
+                string[] partesNomeCor = cliente.Value.Item2.Split('|');
                 string nome = partesNomeCor[0];
 
                 // Adiciona o nome e o endereço IP do cliente à lista de clientes conectados
@@ -328,6 +316,23 @@ namespace TCPServidor
                 }
             }
             return ipAddress;
+        }
+
+        // Método para enviar uma mensagem para um cliente
+        private void Send(Socket clientSocket, string message)
+        {
+            try
+            {
+                // Converte a mensagem para bytes
+                byte[] data = Encoding.UTF8.GetBytes(message);
+
+                // Envia a mensagem para o cliente
+                clientSocket.Send(data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao enviar mensagem: {ex.Message}");
+            }
         }
     }
 }
