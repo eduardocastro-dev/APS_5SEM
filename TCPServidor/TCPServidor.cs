@@ -22,23 +22,32 @@ namespace TCPServidor
         private List<Socket> _clientSockets = new List<Socket>();
         private Dictionary<string, Tuple<Socket, string>> clientes = new Dictionary<string, Tuple<Socket, string>>();
 
-        // Timer para verificar a conectividade dos clientes
-        private System.Threading.Timer _conectividadeTimer;
-
         // Evento para quando o botão "Iniciar" é clicado
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-            // Inicia o servidor
-            StartServer();
+            if (string.IsNullOrEmpty(txtNomeServidor.Text))
+            {
+                MessageBox.Show("Por Favor, insira um nome de Usuário", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            try
+            {
+                // Inicia o servidor
+                StartServer();
 
-            // Exibe uma mensagem na caixa de texto informando que o servidor foi iniciado
-            AppendText(txtInfo, $"Servidor Iniciado...{Environment.NewLine}", Color.Black);
+                // Exibe uma mensagem na caixa de texto informando que o servidor foi iniciado
+                AppendText(txtInfo, $"Servidor Iniciado...{Environment.NewLine}", Color.Black);
 
-            // Desabilita o botão "Iniciar"
-            btnIniciar.Enabled = false;
+                // Desabilita o botão "Iniciar"
+                btnIniciar.Enabled = false;
 
-            // Habilita o botão "Mensagem"
-            btnMensagem.Enabled = true;
+                // Habilita o botão "Mensagem"
+                btnMensagem.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         // Evento para quando o formulário é carregado
@@ -86,9 +95,6 @@ namespace TCPServidor
                 // Inicia uma thread para aceitar conexões de clientes
                 Thread acceptThread = new Thread(AcceptClients);
                 acceptThread.Start();
-
-                // Inicia o timer para verificar a conectividade dos clientes
-                _conectividadeTimer = new System.Threading.Timer(ValidaClienteConectado, null, 30000, 30000);
             }
             catch (Exception ex)
             {
@@ -232,6 +238,26 @@ namespace TCPServidor
                     }
                 }
             }
+
+            // Se a mensagem for " Se desconectou...", trata a desconexão do cliente
+            if (mensagemRecebida == " Se desconectou...")
+            {
+                byte[] desconexao = Encoding.ASCII.GetBytes("DESCONECTAR");
+                clientSocket.Send(desconexao, desconexao.Length, SocketFlags.None);
+
+                // Fecha a conexão do cliente que enviou a mensagem de desconexão
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+
+                // Remove o cliente da lista de clientes conectados
+                _clientSockets.Remove(clientSocket);
+                clientes.Remove(ipPort);
+
+                // Exibe uma mensagem na caixa de texto informando que o cliente foi removido
+                AppendText(txtInfo, $"Cliente {ipPort} removido da lista.{Environment.NewLine}", Color.Black);
+                // Atualiza a lista de clientes conectados na interface gráfica
+                AtualizarListaClientes();
+            }
         }
 
         // Evento para quando o botão "Mensagem" é clicado
@@ -341,69 +367,14 @@ namespace TCPServidor
             }
         }
 
-        // Método para validar a conectividade dos clientes
-        private void ValidaClienteConectado(object state)
+        private void label9_Click(object sender, EventArgs e)
         {
-            // Verifica se o servidor está escutando por conexões
-            if (_serverSocket.IsBound)
-            {
-                // Faz uma cópia da lista de clientes conectados para evitar modificação durante a iteração
-                List<string> clientesConectados = new List<string>(clientes.Keys);
 
-                // Itera pelos clientes conectados
-                foreach (var ipPort in clientesConectados)
-                {
-                    try
-                    {
-                        // Envia um ping para o cliente
-                        Socket socket = clientes[ipPort].Item1;
-                        Send(socket, "PING");
-
-                        // Aguarda um tempo curto para a resposta do cliente
-                        Thread.Sleep(1000);
-
-                        // Verifica se a resposta do cliente foi recebida
-                        if (socket.Available == 0)
-                        {
-                            // Se não houve resposta, desconecta o cliente e remove da lista
-                            Console.WriteLine($"Cliente {ipPort} desconectado.");
-                            DesconectarCliente(ipPort);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Se houve algum erro, desconecta o cliente e remove da lista
-                        Console.WriteLine($"Erro ao validar conexão com {ipPort}: {ex.Message}");
-                        DesconectarCliente(ipPort);
-                    }
-                }
-            }
         }
 
-        // Método para desconectar um cliente e removê-lo da lista
-        private void DesconectarCliente(string ipPort)
+        private void btnFecharConexao_Click(object sender, EventArgs e)
         {
-            // Remove o cliente da lista de clientes conectados
-            clientes.Remove(ipPort);
 
-            // Envia uma mensagem para todos os clientes conectados informando que o cliente foi desconectado
-            foreach (var cliente in clientes.Keys)
-            {
-                Socket socket = clientes[cliente].Item1;
-                string[] partesNomeCor = clientes[ipPort].Item2.Split('|');
-                string nome = partesNomeCor[0];
-                Send(socket, $"●:Black:{nome}:Desconectado.");
-            }
-
-            // Fecha a conexão do cliente
-            if (clientes.ContainsKey(ipPort))
-            {
-                Socket socket = clientes[ipPort].Item1;
-                socket.Close();
-            }
-
-            // Atualiza a lista de clientes conectados na interface gráfica (usando BeginInvoke)
-            this.BeginInvoke((MethodInvoker)delegate { AtualizarListaClientes(); });
         }
     }
 }

@@ -53,6 +53,7 @@ namespace TCPClient
 
                 // Habilita o botão "Mensagem" para enviar mensagens
                 btnMensagem.Enabled = true;
+                btnDesconectar.Enabled = true;
 
                 // Desabilita o botão "Conectar" para evitar conexões duplicadas
                 btnConectar.Enabled = false;
@@ -73,7 +74,7 @@ namespace TCPClient
         private void btnMensagem_Click(object sender, EventArgs e)
         {
             // Verifica se a conexão com o servidor está ativa
-            if (_clientSocket != null && _clientSocket.Connected)
+            if (_clientSocket != null && _clientSocket.Connected && txtNomeCliente.Text != "")
             {
                 // Verifica se o usuário digitou uma mensagem
                 if (!string.IsNullOrEmpty(txtMensagem.Text))
@@ -99,6 +100,10 @@ namespace TCPClient
                     // Limpa a caixa de texto "txtMensagem"
                     txtMensagem.Text = string.Empty;
                 }
+            }
+            else
+            {
+                MessageBox.Show("Teste");
             }
         }
 
@@ -127,7 +132,7 @@ namespace TCPClient
         // Método para receber mensagens do servidor
         private async Task ReceiveMessages()
         {
-            while (_clientSocket.Connected)
+            while (true) // Remova o _clientSocket.Connected aqui
             {
                 try
                 {
@@ -137,21 +142,22 @@ namespace TCPClient
                     // Recebe dados do servidor
                     int bytesReceived = await Task.Run(() => _clientSocket.Receive(buffer));
 
+                    Task.Delay(15000).Wait();
                     // Se nenhum dado for recebido, o servidor desconectou
                     if (bytesReceived == 0)
                     {
                         // Exibe uma mensagem na caixa de texto "txtInfo" informando que a conexão foi encerrada
-                        AppendTextToRichTextBox(txtInfo, $"Conexão encerrada... {Environment.NewLine}", Color.Black);
+                        AppendTextToRichTextBox(txtInfo, $"Desconectando... {Environment.NewLine}", Color.Black);
 
                         // Desabilita o botão "Mensagem"
                         btnMensagem.Enabled = false;
 
                         // Habilita o botão "Conectar"
-                        btnConectar.Enabled = true;
+                        btnDesconectar.Enabled = true;
 
                         // Fecha a conexão
                         _clientSocket.Close();
-                        break;
+                        return; // Use return para sair do método ReceiveMessages
                     }
 
                     // Decodifica a mensagem recebida do servidor
@@ -160,20 +166,28 @@ namespace TCPClient
                     // Processa a mensagem recebida na thread principal
                     await Task.Run(() => ProcessMessage(mensagemRecebida));
                 }
-                catch (Exception ex)
+                catch (SocketException ex)
                 {
-                    // Exibe uma mensagem na caixa de texto "txtInfo" informando que a conexão foi encerrada
-                    AppendTextToRichTextBox(txtInfo, $"Conexão encerrada... {Environment.NewLine}", Color.Black);
+                    if (ex.SocketErrorCode == SocketError.ConnectionReset)
+                    {
+                        // Exibe uma mensagem mais informativa para o usuário
+                        AppendTextToRichTextBox(txtInfo, $"Conexão encerrada pelo servidor (código de erro 10053). {Environment.NewLine}", Color.Red);
+                    }
+                    else
+                    {
+                        // Outro tipo de erro de socket
+                        AppendTextToRichTextBox(txtInfo, $"Conexão encerrada.. {Environment.NewLine}", Color.Black);
+                    }
 
                     // Desabilita o botão "Mensagem"
                     btnMensagem.Enabled = false;
 
                     // Habilita o botão "Conectar"
-                    btnConectar.Enabled = true;
+                    btnDesconectar.Enabled = false;
 
                     // Fecha a conexão
                     _clientSocket.Close();
-                    break;
+                    return; // Use return para sair do método ReceiveMessages
                 }
             }
         }
@@ -317,6 +331,41 @@ namespace TCPClient
                 richTextBox.SelectionColor = color;
                 richTextBox.AppendText(text);
                 richTextBox.SelectionColor = richTextBox.ForeColor;
+            }
+        }
+
+        private void btnDesconectar_Click(object sender, EventArgs e)
+        {
+            // Verifica se a conexão está ativa
+            if (_clientSocket != null && _clientSocket.Connected)
+            {
+                try
+                {
+                    // Obtem o nome do cliente
+                    string nomeCliente = txtNomeCliente.Text;
+
+                    // Cria a mensagem de desconexão
+                    string mensagemDesconexao = $" Se desconectou...";
+
+                    // Envia a mensagem de desconexão para o servidor
+                    Send(mensagemDesconexao);
+
+                    // Encerra a conexão usando Shutdown
+                    _clientSocket.Shutdown(SocketShutdown.Both);
+                    _clientSocket.Close();
+
+                    // Desabilita o botão "Mensagem"
+                    btnMensagem.Enabled = false;
+
+                    // Habilita o botão "Conectar"
+                    btnDesconectar.Enabled = false;
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }
