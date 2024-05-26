@@ -1,58 +1,56 @@
-﻿using SuperSimpleTcp;
-using System.Text;
-using System.Drawing;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Drawing;
+using System.IO;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace TCPServidor
 {
     public partial class TCPServidor : Form
     {
+        private Socket _serverSocket;
+        private List<Socket> _clientSockets = new List<Socket>();
+        private Dictionary<string, Tuple<Socket, string>> clientes = new Dictionary<string, Tuple<Socket, string>>();
+        private string pastaCompartilhada = "";
+
         public TCPServidor()
         {
             InitializeComponent();
         }
 
-        // Variáveis para o servidor e a lista de clientes conectados
-        SimpleTcpServer servidor;
-        private Dictionary<string, string> clientes = new Dictionary<string, string>();
-
-        // Evento para quando o botão "Iniciar" é clicado
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-            // Inicia o servidor
-            servidor.Start();
-            // Exibe uma mensagem na caixa de texto informando que o servidor foi iniciado
-            AppendText(txtInfo, $"Servidor Iniciado...{Environment.NewLine}", Color.Black);
-            // Desabilita o botão "Iniciar"
-            btnIniciar.Enabled = false;
-            // Habilita o botão "Mensagem"
-            btnMensagem.Enabled = true;
+            if (string.IsNullOrEmpty(txtNomeServidor.Text) || string.IsNullOrEmpty(pastaCompartilhada))
+            {
+                MessageBox.Show("Por Favor, insira um nome de Usuário e selecione a pasta para salvar as imagens", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                StartServer();
+                AppendText(txtInfo, $"Servidor Iniciado...{Environment.NewLine}", Color.Black);
+                btnIniciar.Enabled = false;
+                btnMensagem.Enabled = true;
+                btnAnexo.Enabled = true;
+                btnFecharConexao.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao iniciar o servidor: {ex.Message}");
+                MessageBox.Show($"Erro ao iniciar o servidor: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        // Evento para quando o formulário é carregado
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Desabilita o botão "Mensagem"
             btnMensagem.Enabled = false;
+            txtIP.Text = GetIp();
 
-            // Obtém o endereço IP da máquina local
-            string ip = GetIp();
-
-            // Cria um novo servidor TCP usando o IP e a porta 9000
-            servidor = new SimpleTcpServer($"{ip}:9000"); 
-            // Exibe o endereço IP do servidor na caixa de texto "txtIP"
-            txtIP.Text = ip;
-
-            // Define os eventos do servidor:
-            servidor.Events.ClientConnected += Events_ClientConnected; // Quando um cliente se conecta
-            servidor.Events.ClientDisconnected += Events_ClientDisconnected; // Quando um cliente se desconecta
-            servidor.Events.DataReceived += Events_DataReceived; // Quando o servidor recebe dados de um cliente
-
-            // Adiciona as cores disponíveis na caixa de combinação "cmbCor"
             cmbCor.Items.Add("Black");
             cmbCor.Items.Add("Blue");
             cmbCor.Items.Add("Red");
@@ -63,158 +61,214 @@ namespace TCPServidor
             cmbCor.Items.Add("Brown");
             cmbCor.Items.Add("Gray");
             cmbCor.Items.Add("Purple");
-
-            // Define a cor padrão da caixa de combinação como "Preto"
             cmbCor.SelectedIndex = 0;
         }
 
-        // Evento para quando o servidor recebe dados de um cliente
-        private void Events_DataReceived(object? sender, DataReceivedEventArgs e)
+        private void StartServer()
         {
-            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
-            this.Invoke((MethodInvoker)delegate
+            _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            try
             {
-                // Decodifica a mensagem recebida
-                string mensagemRecebida = Encoding.UTF8.GetString(e.Data);
-                string nome = ""; // Variável para armazenar o nome do cliente
-                Color cor = Color.Black; // Variável para armazenar a cor do cliente
-                string mensagem = mensagemRecebida; // Variável para armazenar a mensagem do cliente
+                _serverSocket.Bind(new IPEndPoint(IPAddress.Any, 9000));
+                _serverSocket.Listen(10);
+                Console.WriteLine("Servidor iniciado e escutando na porta 9000.");
+                Thread acceptThread = new Thread(AcceptClients);
+                acceptThread.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao iniciar o servidor: {ex.Message}");
+                MessageBox.Show($"Erro ao iniciar o servidor: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-                // Se a mensagem começar com "Nome:", significa que é a informação do nome e cor do cliente
-                if (mensagemRecebida.StartsWith("Nome:"))
+        private void AcceptClients()
+        {
+            while (true)
+            {
+                try
                 {
-                    // Divide a mensagem em partes usando o ponto e vírgula como separador
-                    string[] partes = mensagemRecebida.Split(';');
-                    // Itera pelas partes da mensagem
-                    foreach (string parte in partes)
+                    Socket clientSocket = _serverSocket.Accept();
+                    _clientSockets.Add(clientSocket);
+                    Thread clientThread = new Thread(() => HandleClient(clientSocket));
+                    clientThread.Start();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao aceitar conexão: {ex.Message}");
+                }
+            }
+        }
+
+        private void HandleClient(Socket clientSocket)
+        {
+            try
+            {
+                byte[] buffer = new byte[1024];
+
+                while (true)
+                {
+                    int bytesReceived = clientSocket.Receive(buffer);
+
+                    if (bytesReceived == 0)
                     {
-                        // Se a parte começar com "Nome:", extraia o nome do cliente
-                        if (parte.StartsWith("Nome:"))
-                            nome = parte.Substring(5);
-                        // Se a parte começar com "Cor:", extraia a cor do cliente
-                        else if (parte.StartsWith("Cor:"))
-                            cor = Color.FromName(parte.Substring(4));
+                        Console.WriteLine("Cliente desconectado.");
+                        _clientSockets.Remove(clientSocket);
+                        clientSocket.Close();
+                        break;
                     }
 
-                    // Se o cliente já estiver na lista de clientes, atualiza as informações
-                    if (clientes.ContainsKey(e.IpPort))
+                    string mensagemRecebida = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        clientes[e.IpPort] = $"{nome}|{cor.Name}";
-                    }
-                    // Se o cliente não estiver na lista, adiciona-o
-                    else
-                    {
-                        clientes.Add(e.IpPort, $"{nome}|{cor.Name}");
-                    }
+                        ProcessMessage(mensagemRecebida, clientSocket.RemoteEndPoint.ToString(), clientSocket);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro no tratamento do cliente: {ex.Message}");
+            }
+        }
 
-                    // Exibe uma mensagem na caixa de texto informando que o cliente se conectou
-                    AppendText(txtInfo, $"{nome} Se conectou...{Environment.NewLine}", Color.Black);
-                    // Atualiza a lista de clientes conectados na interface gráfica
-                    AtualizarListaClientes();
+        private void ProcessMessage(string mensagemRecebida, string ipPort, Socket clientSocket)
+        {
+            string nome = "";
+            Color cor = Color.Black;
+            string mensagem = mensagemRecebida;
+
+            if (mensagemRecebida.StartsWith("Nome:"))
+            {
+                string[] partes = mensagemRecebida.Split(';');
+
+                foreach (string parte in partes)
+                {
+                    if (parte.StartsWith("Nome:"))
+                        nome = parte.Substring(5);
+                    else if (parte.StartsWith("Cor:"))
+                        cor = Color.FromName(parte.Substring(4));
+                }
+
+                if (clientes.ContainsKey(ipPort))
+                {
+                    clientes[ipPort] = Tuple.Create(clientSocket, $"{nome}|{cor.Name}");
                 }
                 else
                 {
-                    // Se a mensagem não começar com "Nome:", significa que é uma mensagem comum
-                    // Obtem o nome e a cor do cliente a partir da lista de clientes
-                    string[] partesNomeCor = clientes[e.IpPort].Split('|');
-                    nome = partesNomeCor[0];
-                    cor = Color.FromName(partesNomeCor[1]);
+                    clientes.Add(ipPort, Tuple.Create(clientSocket, $"{nome}|{cor.Name}"));
+                }
 
-                    // Se a mensagem começar com "●:", significa que é uma mensagem com uma cor específica
-                    if (mensagemRecebida.StartsWith("●:"))
+                AppendText(txtInfo, $"{nome} Se conectou...{Environment.NewLine}", Color.Black);
+                AtualizarListaClientes();
+            }
+            else if (mensagemRecebida.StartsWith("Arquivo:"))
+            {
+                string[] partes = mensagemRecebida.Split(':');
+                string fileName = partes[1];
+
+                byte[] headerBytes = new byte[4];
+                clientSocket.Receive(headerBytes);
+                int fileSize = BitConverter.ToInt32(headerBytes, 0);
+
+                byte[] fileBytes = new byte[fileSize];
+                int bytesRead = 0;
+                while (bytesRead < fileSize)
+                {
+                    bytesRead += clientSocket.Receive(fileBytes, bytesRead, fileSize - bytesRead, SocketFlags.None);
+                }
+
+                string[] partesNomeCor = clientes[ipPort].Item2.Split('|');
+                nome = partesNomeCor[0];
+
+                string novoNomeArquivo = $"{nome}_{DateTime.Now:yyyyMMddHHmmss}{Path.GetExtension(fileName)}";
+
+                string savePath = Path.Combine(pastaCompartilhada, novoNomeArquivo);
+                File.WriteAllBytes(savePath, fileBytes);
+
+                AppendText(txtInfo, $"{nome} Enviou uma imagem!{Environment.NewLine}", Color.DarkGreen);
+
+                foreach (var cliente in clientes.Keys)
+                {
+                    if (cliente != ipPort)
                     {
-                        // Divide a mensagem em partes usando o ponto e vírgula como separador
-                        string[] partesMensagem = mensagemRecebida.Split(':');
-                        // Extraia a mensagem do cliente
-                        mensagem = partesMensagem[3];
-                    }
-
-                    // Exibe o círculo com a cor do cliente na caixa de texto
-                    AppendText(txtInfo, $" ● ", cor);
-                    // Exibe a mensagem do cliente na caixa de texto
-                    AppendText(txtInfo, $"{nome}: {mensagem}{Environment.NewLine}", Color.Black);
-
-                    // Reenvia a mensagem para todos os clientes conectados, exceto o cliente que a enviou
-                    foreach (string ipPort in clientes.Keys)
-                    {
-                        if (ipPort != e.IpPort)
-                        {
-                            string mensagemCompleta = $"●:{cor.Name}:{nome}:{mensagem}";
-                            servidor.Send(ipPort, mensagemCompleta);
-                        }
+                        Socket socket = clientes[cliente].Item1;
+                        Send(socket, $"Arquivo:{fileName}");
+                        socket.Send(headerBytes);
+                        socket.Send(fileBytes);
+                        AppendText(txtInfo, $"{cliente} recebeu o anexo! {Environment.NewLine}", Color.Black);
                     }
                 }
-            });
-        }
-
-        // Evento para quando um cliente se desconecta do servidor
-        private void Events_ClientDisconnected(object? sender, ConnectionEventArgs e)
-        {
-            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
-            this.Invoke((MethodInvoker)delegate
+            }
+            else
             {
-                // Obtem o nome do cliente a partir da lista de clientes
-                string[] partesNomeCor = clientes[e.IpPort].Split('|');
-                string nomeCliente = partesNomeCor[0];
+                string[] partesNomeCor = clientes[ipPort].Item2.Split('|');
+                nome = partesNomeCor[0];
+                cor = Color.FromName(partesNomeCor[1]);
 
-                // Exibe uma mensagem na caixa de texto informando que o cliente se desconectou
-                AppendText(txtInfo, $"{nomeCliente} Se desconectou...{Environment.NewLine}", Color.Black);
-                // Remove o cliente da lista de clientes conectados
-                clientes.Remove(e.IpPort);
-                // Atualiza a lista de clientes conectados na interface gráfica
+                if (mensagemRecebida.StartsWith("●:"))
+                {
+                    string[] partesMensagem = mensagemRecebida.Split(':');
+                    mensagem = partesMensagem[3];
+                }
+
+                AppendText(txtInfo, $" ● ", cor);
+                AppendText(txtInfo, $"{nome}: {mensagem}{Environment.NewLine}", Color.Black);
+
+                foreach (var cliente in clientes.Keys)
+                {
+                    if (cliente != ipPort)
+                    {
+                        Socket socket = clientes[cliente].Item1;
+                        string mensagemCompleta = $"●:{cor.Name}:{nome}:{mensagem}";
+                        Send(socket, mensagemCompleta);
+                    }
+                }
+            }
+
+            if (mensagemRecebida == " Se desconectou...")
+            {
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+
+                _clientSockets.Remove(clientSocket);
+                clientes.Remove(ipPort);
+
+                AppendText(txtInfo, $"Cliente {ipPort} removido da lista.{Environment.NewLine}", Color.Black);
                 AtualizarListaClientes();
-            });
+            }
         }
 
-        // Evento para quando um cliente se conecta ao servidor
-        private void Events_ClientConnected(object? sender, ConnectionEventArgs e)
-        {
-
-        }
-
-        // Evento para quando o botão "Mensagem" é clicado
         private void btnMensagem_Click(object sender, EventArgs e)
         {
-            // Verifica se o servidor está escutando por conexões
-            if (servidor.IsListening)
+            if (_serverSocket.IsBound)
             {
-                // Verifica se o usuário digitou uma mensagem
                 if (!string.IsNullOrEmpty(txtMensagem.Text))
                 {
-                    // Obtem a cor selecionada pelo usuário na caixa de combinação
                     Color corServidor = Color.FromName(cmbCor.SelectedItem.ToString());
-                    // Exibe o círculo com a cor do servidor na caixa de texto
                     AppendText(txtInfo, " ● ", corServidor);
-                    // Exibe a mensagem do servidor na caixa de texto
                     AppendText(txtInfo, $"{txtNomeServidor.Text}: {txtMensagem.Text}{Environment.NewLine}", Color.Black);
-                    // Obtem o nome da cor selecionada pelo usuário
                     string corEnv = cmbCor.Text;
 
-                    // Envia a mensagem para todos os clientes conectados
-                    foreach (string ipPort in clientes.Keys)
+                    foreach (var cliente in clientes.Keys)
                     {
-                        servidor.Send(ipPort, $"●:{corEnv}:{txtNomeServidor.Text}:{txtMensagem.Text}");
+                        Socket socket = clientes[cliente].Item1;
+                        Send(socket, $"●:{corEnv}:{txtNomeServidor.Text}:{txtMensagem.Text}");
                     }
 
-                    // Limpa a caixa de texto de mensagem
                     txtMensagem.Text = string.Empty;
                 }
             }
         }
 
-        // Evento para quando o texto da caixa de texto "txtNomeServidor" é alterado
         private void txtNomeServidor_TextChanged(object sender, EventArgs e)
         {
-
         }
 
-        // Evento para quando a seleção da caixa de combinação "cmbCor" é alterada
         private void cmbCor_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
-        // Método para adicionar texto à caixa de texto com uma cor específica
         private void AppendText(RichTextBox box, string text, Color color)
         {
             box.SelectionStart = box.TextLength;
@@ -223,23 +277,18 @@ namespace TCPServidor
             box.SelectionColor = box.ForeColor;
         }
 
-        // Método para atualizar a lista de clientes conectados na interface gráfica
         private void AtualizarListaClientes()
         {
-            // Limpa a lista de clientes conectados
             listClienteIP.Items.Clear();
-            // Itera pelos clientes conectados
+
             foreach (var cliente in clientes)
             {
-                // Obtem o nome do cliente a partir da lista de clientes
-                string[] partesNomeCor = cliente.Value.Split('|');
+                string[] partesNomeCor = cliente.Value.Item2.Split('|');
                 string nome = partesNomeCor[0];
-                // Adiciona o nome e o endereço IP do cliente à lista de clientes conectados
                 listClienteIP.Items.Add($"{nome} ({cliente.Key})");
             }
         }
 
-        // Método para obter o endereço IP da máquina local
         private string GetIp()
         {
             string ipAddress = string.Empty;
@@ -253,6 +302,146 @@ namespace TCPServidor
                 }
             }
             return ipAddress;
+        }
+
+        private void Send(Socket clientSocket, string message)
+        {
+            try
+            {
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                clientSocket.Send(data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao enviar mensagem: {ex.Message}");
+            }
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void btnFecharConexao_Click(object sender, EventArgs e)
+        {
+            if (_serverSocket != null && _serverSocket.IsBound)
+            {
+                foreach (var cliente in clientes.Keys)
+                {
+                    Socket socket = clientes[cliente].Item1;
+                    Send(socket, $"Servidor encerrado...");
+                }
+
+                foreach (Socket socket in _clientSockets)
+                {
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
+                }
+
+                _serverSocket.Close();
+                _clientSockets.Clear();
+                clientes.Clear();
+                AtualizarListaClientes();
+                btnMensagem.Enabled = false;
+                btnAnexo.Enabled = false;
+                btnIniciar.Enabled = true;
+                btnFecharConexao.Enabled = false;
+                AppendText(txtInfo, $"Finalizado....{Environment.NewLine}", Color.Black);
+            }
+        }
+
+        private void txtInfo_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void btnSelecionarArquivo_Click_1(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                pastaCompartilhada = folderDialog.SelectedPath;
+                txtPastaCompartilhada.Text = pastaCompartilhada;
+            }
+        }
+
+        private void btnAnexo_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Todos os arquivos|*.*|Imagens (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+
+                if (_serverSocket != null && _serverSocket.IsBound)
+                {
+                    try
+                    {
+                        byte[] fileBytes = File.ReadAllBytes(filePath);
+                        byte[] header = BitConverter.GetBytes(fileBytes.Length);
+
+                        foreach (var cliente in clientes.Keys)
+                        {
+                            Socket socket = clientes[cliente].Item1;
+                            string fileName = Path.GetFileName(filePath);
+                            Send(socket, $"Arquivo:{fileName}");
+                            socket.Send(header);
+                            socket.Send(fileBytes);
+                            AppendText(txtInfo, $"{cliente} recebeu o anexo! {Environment.NewLine}", Color.Black);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Você precisa iniciar o servidor para enviar um anexo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void TCPServidor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            foreach (var cliente in clientes.Keys)
+            {
+                Socket socket = clientes[cliente].Item1;
+                Send(socket, $"Servidor encerrado...");
+            }
+
+            foreach (Socket socket in _clientSockets)
+            {
+                try
+                {
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao fechar o socket: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            if (_serverSocket != null)
+            {
+                try
+                {
+                    _serverSocket.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao fechar o socket do servidor: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            _clientSockets.Clear();
+            clientes.Clear();
+            AtualizarListaClientes();
+            btnMensagem.Enabled = false;
+            btnAnexo.Enabled = false;
+            btnIniciar.Enabled = true;
+            btnFecharConexao.Enabled = false;
+            AppendText(txtInfo, $"Finalizado....{Environment.NewLine}", Color.Black);
         }
     }
 }

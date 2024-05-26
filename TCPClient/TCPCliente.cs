@@ -1,107 +1,80 @@
-﻿using SuperSimpleTcp;
-using System.Text;
+﻿using System;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace TCPClient
 {
     public partial class TCPCliente : Form
     {
+        private Socket _clientSocket;
+        private string _serverIp;
+        private int _port = 9000;
+        private string pastaCompartilhada = "";
+
         public TCPCliente()
         {
             InitializeComponent();
         }
 
-        // Variável para armazenar a conexão do cliente com o servidor
-        SimpleTcpClient cliente;
-
-        // Evento que ocorre quando o botão "Conectar" é clicado
-        private void btnConectar_Click(object sender, EventArgs e)
+        private async void btnConectar_Click(object sender, EventArgs e)
         {
-            // Verifica se o usuário digitou um nome de usuário
-            if (string.IsNullOrEmpty(txtNomeCliente.Text))
+            if (string.IsNullOrEmpty(txtNomeCliente.Text) || string.IsNullOrEmpty(txtIP.Text) || string.IsNullOrEmpty(pastaCompartilhada))
             {
-                // Exibe uma mensagem de erro se o nome de usuário estiver vazio
-                MessageBox.Show("Por Favor, insira um nome de Usuário", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Retorna para evitar continuar a execução do código
+                MessageBox.Show("Por Favor, insira um nome de Usuário, o endereço IP do servidor e selecione a pasta para salvar as imagens", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Verifica se o usuário digitou o endereço IP do servidor
-            if (string.IsNullOrEmpty(txtIP.Text))
-            {
-                // Exibe uma mensagem de erro se o endereço IP estiver vazio
-                MessageBox.Show("Por Favor, insira o endereço IP do servidor", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Retorna para evitar continuar a execução do código
-                return;
-            }
+            _serverIp = txtIP.Text;
 
             try
             {
-                // Cria uma nova conexão com o servidor usando o endereço IP e a porta 9000
-                cliente = new(txtIP.Text + ":9000");
-
-                // Define os eventos da conexão:
-                // - Events_Connected: Ocorre quando a conexão é estabelecida
-                // - Events_Disconnected: Ocorre quando a conexão é encerrada
-                // - Events_DataReceived: Ocorre quando o cliente recebe dados do servidor
-                cliente.Events.Connected += Events_Connected;
-                cliente.Events.Disconnected += Events_Disconnected;
-                cliente.Events.DataReceived += Events_DataReceived;
-
-                // Tenta estabelecer a conexão com o servidor
-                cliente.Connect();
-                // Envia o nome e a cor do cliente para o servidor
+                _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                await Task.Run(() => _clientSocket.Connect(IPAddress.Parse(_serverIp), _port));
                 EnviarNomeECor();
-                // Habilita o botão "Mensagem" para enviar mensagens
                 btnMensagem.Enabled = true;
-                // Desabilita o botão "Conectar" para evitar conexões duplicadas
+                btnDesconectar.Enabled = true;
+                btnAnexo.Enabled = true;
+                cmbcor.Enabled = false;
                 btnConectar.Enabled = false;
+                AppendTextToRichTextBox(txtInfo, $"Conexão estabelecida... {Environment.NewLine}", Color.Black);
+                Task.Run(ReceiveMessages);
             }
             catch (Exception ex)
             {
-                // Exibe uma mensagem de erro se a conexão falhar
                 MessageBox.Show(ex.Message, "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Evento que ocorre quando o botão "Mensagem" é clicado
         private void btnMensagem_Click(object sender, EventArgs e)
         {
-            // Verifica se a conexão com o servidor está ativa
-            if (cliente.IsConnected)
+            if (_clientSocket != null && _clientSocket.Connected && txtNomeCliente.Text != "")
             {
-                // Verifica se o usuário digitou uma mensagem
                 if (!string.IsNullOrEmpty(txtMensagem.Text))
                 {
-                    // Obtem a cor selecionada pelo usuário
                     string corEnv = cmbcor.SelectedItem.ToString();
-                    // Cria a mensagem completa com o nome do cliente, a cor e a mensagem
                     string mensagemCompleta = $"●:{corEnv}:{txtNomeCliente.Text}:{txtMensagem.Text}";
-                    // Envia a mensagem para o servidor
-                    cliente.Send(mensagemCompleta);
-
-                    // Obtem a cor correspondente à seleção do usuário
+                    Send(mensagemCompleta);
                     Color corSelecionada = GetColorFromComboBox(cmbcor.SelectedItem.ToString());
-                    // Exibe o círculo com a cor da mensagem na caixa de texto "txtInfo"
                     AppendTextToRichTextBox(txtInfo, $" ● ", corSelecionada);
-                    // Exibe a mensagem do cliente na caixa de texto "txtInfo"
                     AppendTextToRichTextBox(txtInfo, $"{txtNomeCliente.Text}: {txtMensagem.Text}{Environment.NewLine}", Color.Black);
-                    // Limpa a caixa de texto "txtMensagem"
                     txtMensagem.Text = string.Empty;
                 }
             }
+            else
+            {
+                MessageBox.Show("Teste");
+            }
         }
 
-        // Evento que ocorre quando o formulário é carregado
         private void Form1_Load(object sender, EventArgs e)
         {
-            // A lógica de conexão foi movida para o btnConectar_Click
-            // cliente = new("192.168.0.110:9000"); // Define IP e porta padrão
-            // Desabilita o botão "Mensagem" até que a conexão seja estabelecida
             btnMensagem.Enabled = false;
 
-            // Adiciona as cores disponíveis na caixa de combinação "cmbcor"
             cmbcor.Items.Add("Black");
             cmbcor.Items.Add("Blue");
             cmbcor.Items.Add("Red");
@@ -112,76 +85,131 @@ namespace TCPClient
             cmbcor.Items.Add("Brown");
             cmbcor.Items.Add("Gray");
             cmbcor.Items.Add("Purple");
-
-            // Define a cor padrão da caixa de combinação como "Preto"
             cmbcor.SelectedIndex = 0;
         }
 
-        // Evento que ocorre quando o cliente recebe dados do servidor
-        private void Events_DataReceived(object? sender, DataReceivedEventArgs e)
+        private async Task ReceiveMessages()
         {
-            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
+            while (true)
+            {
+                try
+                {
+                    byte[] buffer = new byte[1024];
+
+                    if (!_clientSocket.Connected)
+                    {
+                        AppendTextToRichTextBox(txtInfo, $"Desconectando... {Environment.NewLine}", Color.Red);
+                        return;
+                    }
+
+                    int bytesReceived = await Task.Run(() => _clientSocket.Receive(buffer));
+
+                    if (bytesReceived == 0)
+                    {
+                        AppendTextToRichTextBox(txtInfo, $"Desconectando... {Environment.NewLine}", Color.Black);
+                        return;
+                    }
+
+                    string mensagemRecebida = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
+                    await Task.Run(() => ProcessMessage(mensagemRecebida));
+                }
+                catch (SocketException ex)
+                {
+                    if (ex.SocketErrorCode == SocketError.ConnectionReset)
+                    {
+                        AppendTextToRichTextBox(txtInfo, $"Conexão encerrada pelo servidor (código de erro 10053). {Environment.NewLine}", Color.Red);
+                    }
+                    else
+                    {
+                        AppendTextToRichTextBox(txtInfo, $"Desconectado do servidor: {Environment.NewLine}", Color.Red);
+                    }
+
+                    btnMensagem.Enabled = false;
+                    btnDesconectar.Enabled = false;
+                    btnConectar.Enabled = true;
+
+                    if (_clientSocket != null)
+                    {
+                        _clientSocket.Close();
+                    }
+
+                    return;
+                }
+                catch (ObjectDisposedException)
+                {
+                    AppendTextToRichTextBox(txtInfo, $"Desconectado do servidor: O socket foi fechado. {Environment.NewLine}", Color.Red);
+                    btnMensagem.Enabled = false;
+                    btnDesconectar.Enabled = false;
+                    btnConectar.Enabled = true;
+                    return;
+                }
+            }
+        }
+
+        private void ProcessMessage(string mensagemRecebida)
+        {
             this.Invoke((MethodInvoker)delegate
             {
-                // Decodifica a mensagem recebida do servidor
-                string mensagemRecebida = Encoding.UTF8.GetString(e.Data);
-                // Divide a mensagem em partes usando o caractere ':' como separador
                 string[] partesMensagem = mensagemRecebida.Split(':');
 
-                // Verifica se a mensagem possui pelo menos 4 partes
                 if (partesMensagem.Length >= 4)
                 {
-                    // Extrai a cor do círculo, o nome do servidor e a mensagem
                     string corCirculo = partesMensagem[1].TrimStart('●');
                     string nomeServidor = partesMensagem[2].Trim();
                     string mensagem = partesMensagem[3].Trim();
 
-                    // Define a cor do texto como preta
-                    Color corTexto = Color.Black;
-                    // Exibe o círculo com a cor da mensagem na caixa de texto "txtInfo"
                     AppendTextToRichTextBox(txtInfo, $" ● ", Color.FromName(corCirculo));
-                    // Exibe a mensagem do servidor na caixa de texto "txtInfo"
-                    AppendTextToRichTextBox(txtInfo, $"{nomeServidor}: {mensagem}{Environment.NewLine}", corTexto);
+                    AppendTextToRichTextBox(txtInfo, $"{nomeServidor}: {mensagem}{Environment.NewLine}", Color.Black);
+                }
+
+                if (mensagemRecebida == "Servidor encerrado...")
+                {
+                    AppendTextToRichTextBox(txtInfo, $"O servidor foi encerrado. A conexão foi fechada. {Environment.NewLine}", Color.Red);
+                    DesconectarCliente();
+                }
+
+                else if (mensagemRecebida.StartsWith("Arquivo:"))
+                {
+                    string[] partes = mensagemRecebida.Split(':');
+                    string fileName = partes[1];
+
+                    byte[] headerBytes = new byte[4];
+                    _clientSocket.Receive(headerBytes);
+                    int fileSize = BitConverter.ToInt32(headerBytes, 0);
+
+                    byte[] fileBytes = new byte[fileSize];
+                    int bytesRead = 0;
+                    while (bytesRead < fileSize)
+                    {
+                        bytesRead += _clientSocket.Receive(fileBytes, bytesRead, fileSize - bytesRead, SocketFlags.None);
+                    }
+
+                    string savePath = Path.Combine(pastaCompartilhada, fileName);
+                    File.WriteAllBytes(savePath, fileBytes);
+                    AppendTextToRichTextBox(txtInfo, $"Nova imagem recebida! {Environment.NewLine}", Color.DarkGreen);
                 }
             });
         }
 
-        // Evento que ocorre quando a conexão com o servidor é encerrada
-        private void Events_Disconnected(object? sender, ConnectionEventArgs e)
+        private void Send(string message)
         {
-            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
-            this.Invoke((MethodInvoker)delegate
+            try
             {
-                // Exibe uma mensagem na caixa de texto "txtInfo" informando que a conexão foi encerrada
-                AppendTextToRichTextBox(txtInfo, $"Conexão encerrada... {Environment.NewLine}", Color.Black);
-                // Desabilita o botão "Mensagem"
-                btnMensagem.Enabled = false;
-                // Habilita o botão "Conectar"
-                btnConectar.Enabled = true;
-            });
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                _clientSocket.Send(data);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        // Evento que ocorre quando a conexão com o servidor é estabelecida
-        private void Events_Connected(object? sender, ConnectionEventArgs e)
-        {
-            // Executa o código em uma thread separada para evitar bloqueios da interface gráfica
-            this.Invoke((MethodInvoker)delegate
-            {
-                // Exibe uma mensagem na caixa de texto "txtInfo" informando que a conexão foi estabelecida
-                AppendTextToRichTextBox(txtInfo, $"Conexão estabelecida... {Environment.NewLine}", Color.Black);
-            });
-        }
-
-        // Evento que ocorre quando o texto na caixa de texto "txtIP" é alterado
         private void txtIP_TextChanged(object sender, EventArgs e)
         {
-
         }
 
-        // Evento que ocorre quando a seleção na caixa de combinação "cmbcor" é alterada
         private void cmbcor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Define a cor do texto na caixa de texto "txtInfo" de acordo com a cor selecionada
             switch (cmbcor.SelectedItem.ToString())
             {
                 case "Black":
@@ -217,32 +245,20 @@ namespace TCPClient
             }
         }
 
-        // Evento que ocorre quando o texto na caixa de texto "txtNomeCliente" é alterado
         private void txtNomeCliente_TextChanged(object sender, EventArgs e)
         {
-
         }
 
-        // Método para enviar o nome e a cor do cliente para o servidor
         private void EnviarNomeECor()
         {
-            // Verifica se a conexão com o servidor está ativa
-            if (cliente.IsConnected)
-            {
-                // Obtem o nome do cliente e a cor selecionada
-                string nome = txtNomeCliente.Text;
-                string cor = cmbcor.SelectedItem.ToString();
-                // Cria a mensagem com o nome e a cor
-                string mensagemInfo = $"Nome:{nome};Cor:{cor}";
-                // Envia a mensagem para o servidor
-                cliente.Send(mensagemInfo);
-            }
+            string nome = txtNomeCliente.Text;
+            string cor = cmbcor.SelectedItem.ToString();
+            string mensagemInfo = $"Nome:{nome};Cor:{cor}";
+            Send(mensagemInfo);
         }
 
-        // Método para obter a cor correspondente à seleção na caixa de combinação "cmbcor"
         private Color GetColorFromComboBox(string corString)
         {
-            // Retorna a cor correspondente à string da cor
             switch (corString)
             {
                 case "Black": return Color.Black;
@@ -259,13 +275,120 @@ namespace TCPClient
             }
         }
 
-        // Método para adicionar texto à caixa de texto "richTextBox" com uma cor específica
         private void AppendTextToRichTextBox(RichTextBox richTextBox, string text, Color color)
         {
-            richTextBox.SelectionStart = richTextBox.TextLength;
-            richTextBox.SelectionColor = color;
-            richTextBox.AppendText(text);
-            richTextBox.SelectionColor = richTextBox.ForeColor;
+            if (richTextBox.InvokeRequired)
+            {
+                richTextBox.Invoke((MethodInvoker)delegate
+                {
+                    AppendTextToRichTextBox(richTextBox, text, color);
+                });
+            }
+            else
+            {
+                richTextBox.SelectionStart = richTextBox.TextLength;
+                richTextBox.SelectionColor = color;
+                richTextBox.AppendText(text);
+                richTextBox.SelectionColor = richTextBox.ForeColor;
+            }
+        }
+
+        private void btnDesconectar_Click(object sender, EventArgs e)
+        {
+            DesconectarCliente();
+        }
+
+        private void DesconectarCliente()
+        {
+            try
+            {
+                string nomeCliente = txtNomeCliente.Text;
+                string mensagemDesconexao = $" Se desconectou...";
+                Send(mensagemDesconexao);
+                _clientSocket.Shutdown(SocketShutdown.Both);
+                _clientSocket.Close();
+                btnMensagem.Enabled = false;
+                btnDesconectar.Enabled = false;
+                btnConectar.Enabled = true;
+                cmbcor.Enabled = true;
+                AppendTextToRichTextBox(txtInfo, $"Você foi desconectado do servidor. {Environment.NewLine}", Color.Red);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnAnexo_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Todos os arquivos|*.*|Imagens (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+
+                if (_clientSocket != null && _clientSocket.Connected)
+                {
+                    try
+                    {
+                        byte[] fileBytes = File.ReadAllBytes(filePath);
+                        byte[] header = BitConverter.GetBytes(fileBytes.Length);
+                        string fileName = Path.GetFileName(filePath);
+                        Send($"Arquivo:{fileName}");
+                        _clientSocket.Send(header);
+                        _clientSocket.Send(fileBytes);
+                        AppendTextToRichTextBox(txtInfo, $"Anexo enviado com sucesso! {Environment.NewLine}", Color.Black);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Você precisa estar conectado ao servidor para enviar um anexo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnSelecionarArquivo_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                pastaCompartilhada = folderDialog.SelectedPath;
+                txtPastaAnexo.Text = pastaCompartilhada;
+            }
+        }
+
+        private void TCPCliente_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_clientSocket != null && _clientSocket.Connected)
+            {
+                try
+                {
+                    string mensagemDesconexao = $" Se desconectou...";
+                    Send(mensagemDesconexao);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao enviar mensagem de desconexão: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            if (_clientSocket != null)
+            {
+                try
+                {
+                    _clientSocket.Shutdown(SocketShutdown.Both);
+                    _clientSocket.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao fechar o socket: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
