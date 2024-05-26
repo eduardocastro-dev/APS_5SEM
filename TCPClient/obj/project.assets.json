@@ -8,19 +8,19 @@
     "net8.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\eduet\\.nuget\\packages\\": {}
+    "C:\\Users\\Computer\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
+      "projectUniqueName": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
       "projectName": "TCPCliente",
-      "projectPath": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
-      "packagesPath": "C:\\Users\\eduet\\.nuget\\packages\\",
-      "outputPath": "D:\\GIT\\APS_5SEM\\TCPClient\\obj\\",
+      "projectPath": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
+      "packagesPath": "C:\\Users\\Computer\\.nuget\\packages\\",
+      "outputPath": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eduet\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Computer\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -20,6 +20,12 @@ namespace TCPServidor
         public TCPServidor()
         {
             InitializeComponent();
+
+            Image imageLogo = Image.FromFile("Resources/logo_150.png");
+            Image imageAnexo = Image.FromFile("Resources/anexo_18.png");
+
+            label8.Image = imageLogo;
+            btnAnexo.Image = imageAnexo;
         }
 
         private void btnIniciar_Click(object sender, EventArgs e)

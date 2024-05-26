@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GwpN3dtPio0MsIOfKdDG8MDY+Ra6K1GTDiR1jwApExzXEpgAX2nawY6irzrOT1VarN42a37XuvLaEU4gg9eB/Q==",
+  "dgSpecHash": "kUt1WWPvnCds4cDUDe4evY1AEBbZJYuPx05+Rr7O/oFYaWNZW+sTZPtovD2lL1x1k1doXhlV5DZfl7iFIhOsRg==",
   "success": true,
-  "projectFilePath": "D:\\GIT\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
+  "projectFilePath": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

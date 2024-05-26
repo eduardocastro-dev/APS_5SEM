@@ -19,6 +19,12 @@ namespace TCPClient
         public TCPCliente()
         {
             InitializeComponent();
+
+            Image imageLogo = Image.FromFile("Resources/logo_150.png");
+            Image imageAnexo = Image.FromFile("Resources/anexo_18.png");
+
+            label7.Image = imageLogo;
+            btnAnexo.Image = imageAnexo;
         }
 
         private async void btnConectar_Click(object sender, EventArgs e)

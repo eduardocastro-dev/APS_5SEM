@@ -1,7 +1,16 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\GIT\\APS_5SEM\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|c:\\github\\aps_5sem\\aps_5sem\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|c:\\github\\aps_5sem\\aps_5sem\\tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|solutionrelative:tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +35,31 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TCPCliente.cs",
+              "DocumentMoniker": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.cs",
+              "RelativeDocumentMoniker": "TCPClient\\TCPCliente.cs",
+              "ToolTip": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.cs",
+              "RelativeToolTip": "TCPClient\\TCPCliente.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-26T17:01:46.498Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TCPServidor.cs",
+              "DocumentMoniker": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
+              "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
+              "ToolTip": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
+              "RelativeToolTip": "TCPServidor\\TCPServidor.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAA1wCMAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-26T17:01:18.884Z",
+              "EditorCaption": ""
             }
           ]
         }
