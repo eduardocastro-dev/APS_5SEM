@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Update="TCPServidor.cs">
       <SubType>Form</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
 

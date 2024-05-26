@@ -35,7 +35,6 @@ D:\GIT\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\refint\TCPServidor.dll
 D:\GIT\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.pdb
 D:\GIT\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.genruntimeconfig.cache
 D:\GIT\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\ref\TCPServidor.dll
-C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.csproj.AssemblyReference.cache
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.TCPServidor.resources
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.csproj.GenerateResource.cache
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.GeneratedMSBuildEditorConfig.editorconfig
@@ -51,8 +50,6 @@ C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\TC
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\TCPServidor.runtimeconfig.json
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\TCPServidor.dll
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\TCPServidor.pdb
-C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\SuperSimpleTcp.dll
-C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServi.D5362796.Up2Date
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.genruntimeconfig.cache
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\ref\TCPServidor.dll
 C:\Visual_C\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\TCPServidor.exe
@@ -95,3 +92,4 @@ C:\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\refint\TCPServidor.dll
 C:\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.pdb
 C:\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\TCPServidor.genruntimeconfig.cache
 C:\GitHub\APS_5SEM\TCPServidor\obj\Debug\net8.0-windows\ref\TCPServidor.dll
+D:\GIT\APS_5SEM\TCPServidor\bin\Debug\net8.0-windows\TCPServidor.cs

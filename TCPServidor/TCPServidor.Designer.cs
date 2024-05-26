@@ -29,6 +29,7 @@ namespace TCPServidor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TCPServidor));
             label1 = new Label();
             txtIP = new TextBox();
             btnIniciar = new Button();
@@ -49,6 +50,8 @@ namespace TCPServidor
             label9 = new Label();
             label10 = new Label();
             btnFecharConexao = new Button();
+            btnSelecionarArquivo = new Button();
+            txtPastaCompartilhada = new TextBox();
             SuspendLayout();
             // 
             // label1
@@ -119,7 +122,7 @@ namespace TCPServidor
             listClienteIP.Location = new Point(632, 119);
             listClienteIP.Margin = new Padding(3, 2, 3, 2);
             listClienteIP.Name = "listClienteIP";
-            listClienteIP.Size = new Size(181, 289);
+            listClienteIP.Size = new Size(154, 289);
             listClienteIP.TabIndex = 7;
             // 
             // label3
@@ -181,6 +184,7 @@ namespace TCPServidor
             txtInfo.Size = new Size(552, 289);
             txtInfo.TabIndex = 13;
             txtInfo.Text = "";
+            txtInfo.TextChanged += txtInfo_TextChanged;
             // 
             // label6
             // 
@@ -196,6 +200,7 @@ namespace TCPServidor
             // 
             // btnAnexo
             // 
+            btnAnexo.Enabled = false;
             btnAnexo.Location = new Point(600, 466);
             btnAnexo.Margin = new Padding(2, 1, 2, 1);
             btnAnexo.Name = "btnAnexo";
@@ -203,6 +208,7 @@ namespace TCPServidor
             btnAnexo.TabIndex = 15;
             btnAnexo.Text = "!";
             btnAnexo.UseVisualStyleBackColor = true;
+            btnAnexo.Click += btnAnexo_Click;
             // 
             // label7
             // 
@@ -254,6 +260,7 @@ namespace TCPServidor
             // 
             // btnFecharConexao
             // 
+            btnFecharConexao.Enabled = false;
             btnFecharConexao.Location = new Point(439, 89);
             btnFecharConexao.Margin = new Padding(2, 1, 2, 1);
             btnFecharConexao.Name = "btnFecharConexao";
@@ -263,12 +270,32 @@ namespace TCPServidor
             btnFecharConexao.UseVisualStyleBackColor = true;
             btnFecharConexao.Click += btnFecharConexao_Click;
             // 
+            // btnSelecionarArquivo
+            // 
+            btnSelecionarArquivo.Location = new Point(381, 440);
+            btnSelecionarArquivo.Name = "btnSelecionarArquivo";
+            btnSelecionarArquivo.Size = new Size(84, 23);
+            btnSelecionarArquivo.TabIndex = 21;
+            btnSelecionarArquivo.Text = "Pasta Anexo";
+            btnSelecionarArquivo.UseVisualStyleBackColor = true;
+            btnSelecionarArquivo.Click += btnSelecionarArquivo_Click_1;
+            // 
+            // txtPastaCompartilhada
+            // 
+            txtPastaCompartilhada.Enabled = false;
+            txtPastaCompartilhada.Location = new Point(471, 440);
+            txtPastaCompartilhada.Name = "txtPastaCompartilhada";
+            txtPastaCompartilhada.Size = new Size(243, 23);
+            txtPastaCompartilhada.TabIndex = 22;
+            // 
             // TCPServidor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 255, 192);
-            ClientSize = new Size(856, 511);
+            ClientSize = new Size(809, 495);
+            Controls.Add(txtPastaCompartilhada);
+            Controls.Add(btnSelecionarArquivo);
             Controls.Add(btnFecharConexao);
             Controls.Add(label9);
             Controls.Add(label10);
@@ -289,6 +316,7 @@ namespace TCPServidor
             Controls.Add(btnIniciar);
             Controls.Add(txtIP);
             Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "TCPServidor";
@@ -326,5 +354,7 @@ namespace TCPServidor
         private Label label9;
         private Label label10;
         private Button btnFecharConexao;
+        private Button btnSelecionarArquivo;
+        private TextBox txtPastaCompartilhada;
     }
 }

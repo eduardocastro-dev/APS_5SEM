@@ -17,6 +17,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TCPCliente));
             label1 = new Label();
             txtIP = new TextBox();
             btnConectar = new Button();
@@ -35,6 +36,8 @@
             label8 = new Label();
             label9 = new Label();
             btnDesconectar = new Button();
+            btnSelecionarArquivo = new Button();
+            txtPastaAnexo = new TextBox();
             SuspendLayout();
             // 
             // label1
@@ -171,6 +174,7 @@
             // 
             // btnAnexo
             // 
+            btnAnexo.Enabled = false;
             btnAnexo.ForeColor = SystemColors.ActiveCaptionText;
             btnAnexo.Location = new Point(436, 433);
             btnAnexo.Margin = new Padding(2, 1, 2, 1);
@@ -179,6 +183,7 @@
             btnAnexo.TabIndex = 14;
             btnAnexo.Text = "!";
             btnAnexo.UseVisualStyleBackColor = true;
+            btnAnexo.Click += btnAnexo_Click;
             // 
             // label7
             // 
@@ -228,12 +233,33 @@
             btnDesconectar.UseVisualStyleBackColor = true;
             btnDesconectar.Click += btnDesconectar_Click;
             // 
+            // btnSelecionarArquivo
+            // 
+            btnSelecionarArquivo.ForeColor = SystemColors.ActiveCaptionText;
+            btnSelecionarArquivo.Location = new Point(385, 404);
+            btnSelecionarArquivo.Name = "btnSelecionarArquivo";
+            btnSelecionarArquivo.Size = new Size(75, 26);
+            btnSelecionarArquivo.TabIndex = 19;
+            btnSelecionarArquivo.Text = "Pasta Anexo";
+            btnSelecionarArquivo.UseVisualStyleBackColor = true;
+            btnSelecionarArquivo.Click += btnSelecionarArquivo_Click;
+            // 
+            // txtPastaAnexo
+            // 
+            txtPastaAnexo.Enabled = false;
+            txtPastaAnexo.Location = new Point(466, 405);
+            txtPastaAnexo.Name = "txtPastaAnexo";
+            txtPastaAnexo.Size = new Size(100, 23);
+            txtPastaAnexo.TabIndex = 20;
+            // 
             // TCPCliente
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 255, 192);
-            ClientSize = new Size(617, 503);
+            ClientSize = new Size(605, 470);
+            Controls.Add(txtPastaAnexo);
+            Controls.Add(btnSelecionarArquivo);
             Controls.Add(btnDesconectar);
             Controls.Add(label9);
             Controls.Add(label8);
@@ -253,6 +279,7 @@
             Controls.Add(txtIP);
             Controls.Add(label1);
             ForeColor = SystemColors.ControlLightLight;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "TCPCliente";
@@ -283,5 +310,7 @@
         private Label label8;
         private Label label9;
         private Button btnDesconectar;
+        private Button btnSelecionarArquivo;
+        private TextBox txtPastaAnexo;
     }
 }

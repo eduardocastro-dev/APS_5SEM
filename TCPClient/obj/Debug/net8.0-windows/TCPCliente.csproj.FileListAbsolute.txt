@@ -40,8 +40,6 @@ C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\bin\Debug\net8.0-windows\TCPC
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\bin\Debug\net8.0-windows\TCPCliente.runtimeconfig.json
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\bin\Debug\net8.0-windows\TCPCliente.dll
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\bin\Debug\net8.0-windows\TCPCliente.pdb
-C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\bin\Debug\net8.0-windows\SuperSimpleTcp.dll
-C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.csproj.AssemblyReference.cache
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPClient.TCPCliente.resources
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.csproj.GenerateResource.cache
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.GeneratedMSBuildEditorConfig.editorconfig
@@ -49,7 +47,6 @@ C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPC
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.AssemblyInfo.cs
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.csproj.CoreCompileInputs.cache
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.sourcelink.json
-C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.csproj.Up2Date
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.dll
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\refint\TCPCliente.dll
 C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.pdb
@@ -97,3 +94,4 @@ C:\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.csproj.Up2Date
 C:\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.genruntimeconfig.cache
 C:\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\ref\TCPCliente.dll
 D:\GIT\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.Properties.Resources.resources
+C:\Users\eduar\Documents\GitHub\APS_5SEM\TCPClient\obj\Debug\net8.0-windows\TCPCliente.Properties.Resources.resources
