@@ -3,12 +3,15 @@
   "WorkspaceRootPath": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|c:\\github\\aps_5sem\\aps_5sem\\tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\tcpservidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|c:\\github\\aps_5sem\\aps_5sem\\tcpservidor\\obj\\debug\\net8.0-windows\\tcpservidor.assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6DAA7E5-8893-416F-8CAC-B3C0EA31EAB0}|TCPServidor\\TCPServidor.csproj|solutionrelative:tcpservidor\\obj\\debug\\net8.0-windows\\tcpservidor.assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|c:\\github\\aps_5sem\\aps_5sem\\tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|solutionrelative:tcpclient\\tcpcliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|c:\\github\\aps_5sem\\aps_5sem\\tcpclient\\obj\\debug\\net8.0-windows\\tcpcliente.assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B76D525-3D91-49CC-BDE9-026325F29DC1}|TCPClient\\TCPCliente.csproj|solutionrelative:tcpclient\\obj\\debug\\net8.0-windows\\tcpcliente.assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,26 +42,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "TCPCliente.cs",
-              "DocumentMoniker": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.cs",
-              "RelativeDocumentMoniker": "TCPClient\\TCPCliente.cs",
-              "ToolTip": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\TCPCliente.cs",
-              "RelativeToolTip": "TCPClient\\TCPCliente.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAoAAAA",
+              "Title": "TCPCliente.AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\obj\\Debug\\net8.0-windows\\TCPCliente.AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "TCPClient\\obj\\Debug\\net8.0-windows\\TCPCliente.AssemblyInfo.cs",
+              "ToolTip": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPClient\\obj\\Debug\\net8.0-windows\\TCPCliente.AssemblyInfo.cs",
+              "RelativeToolTip": "TCPClient\\obj\\Debug\\net8.0-windows\\TCPCliente.AssemblyInfo.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-26T17:01:46.498Z"
+              "WhenOpened": "2024-05-26T21:05:38.995Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "TCPServidor.cs",
-              "DocumentMoniker": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
-              "RelativeDocumentMoniker": "TCPServidor\\TCPServidor.cs",
-              "ToolTip": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPServidor\\TCPServidor.cs",
-              "RelativeToolTip": "TCPServidor\\TCPServidor.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAA1wCMAAAAXAAAA",
+              "Title": "TCPServidor.AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPServidor\\obj\\Debug\\net8.0-windows\\TCPServidor.AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "TCPServidor\\obj\\Debug\\net8.0-windows\\TCPServidor.AssemblyInfo.cs",
+              "ToolTip": "C:\\GitHub\\APS_5SEM\\APS_5SEM\\TCPServidor\\obj\\Debug\\net8.0-windows\\TCPServidor.AssemblyInfo.cs",
+              "RelativeToolTip": "TCPServidor\\obj\\Debug\\net8.0-windows\\TCPServidor.AssemblyInfo.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-26T17:01:18.884Z",
+              "WhenOpened": "2024-05-26T21:04:14.087Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Microsoft.Common.CurrentVersion.targets",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "RelativeToolTip": "..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ViewState": "AQIAACcNAAAAAAAAAAAewDkNAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2024-05-26T21:02:59.261Z",
               "EditorCaption": ""
             }
           ]

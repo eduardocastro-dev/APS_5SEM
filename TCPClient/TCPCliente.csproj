@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <None Remove="Resources\anexo.png" />
+    <None Remove="Resources\anexo_18.png" />
     <None Remove="Resources\logo.png" />
+    <None Remove="Resources\logo_150.png" />
   </ItemGroup>
 
   <ItemGroup>

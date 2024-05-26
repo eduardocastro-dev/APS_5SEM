@@ -52,6 +52,8 @@ namespace TCPServidor
             btnFecharConexao = new Button();
             btnSelecionarArquivo = new Button();
             txtPastaCompartilhada = new TextBox();
+            label11 = new Label();
+            label12 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -88,7 +90,7 @@ namespace TCPServidor
             // 
             // btnMensagem
             // 
-            btnMensagem.Location = new Point(1174, 994);
+            btnMensagem.Location = new Point(1305, 994);
             btnMensagem.Margin = new Padding(6, 4, 6, 4);
             btnMensagem.Name = "btnMensagem";
             btnMensagem.Size = new Size(152, 47);
@@ -102,7 +104,7 @@ namespace TCPServidor
             txtMensagem.Location = new Point(217, 998);
             txtMensagem.Margin = new Padding(6, 4, 6, 4);
             txtMensagem.Name = "txtMensagem";
-            txtMensagem.Size = new Size(888, 39);
+            txtMensagem.Size = new Size(950, 39);
             txtMensagem.TabIndex = 6;
             // 
             // label2
@@ -208,11 +210,12 @@ namespace TCPServidor
             // btnAnexo
             // 
             btnAnexo.Enabled = false;
-            btnAnexo.Location = new Point(1114, 994);
+            btnAnexo.Location = new Point(1181, 994);
             btnAnexo.Margin = new Padding(4, 2, 4, 2);
             btnAnexo.Name = "btnAnexo";
-            btnAnexo.Size = new Size(50, 47);
+            btnAnexo.Size = new Size(114, 47);
             btnAnexo.TabIndex = 15;
+            btnAnexo.Text = "Anexo";
             btnAnexo.UseVisualStyleBackColor = true;
             btnAnexo.Click += btnAnexo_Click;
             // 
@@ -221,7 +224,7 @@ namespace TCPServidor
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             label7.ForeColor = Color.DarkGreen;
-            label7.Location = new Point(72, 134);
+            label7.Location = new Point(72, 151);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(138, 41);
@@ -237,13 +240,14 @@ namespace TCPServidor
             label8.Name = "label8";
             label8.Size = new Size(150, 70);
             label8.TabIndex = 17;
+            label8.Text = "SEMA";
             // 
             // label9
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 7F);
             label9.ForeColor = Color.DarkGreen;
-            label9.Location = new Point(680, 98);
+            label9.Location = new Point(680, 92);
             label9.Margin = new Padding(4, 0, 4, 0);
             label9.Name = "label9";
             label9.Size = new Size(291, 25);
@@ -295,12 +299,38 @@ namespace TCPServidor
             txtPastaCompartilhada.Size = new Size(448, 39);
             txtPastaCompartilhada.TabIndex = 22;
             // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 6F);
+            label11.ForeColor = Color.DarkGreen;
+            label11.Location = new Point(58, 114);
+            label11.Margin = new Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new Size(152, 21);
+            label11.TabIndex = 24;
+            label11.Text = "DO MEIO AMBIENTE";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 6F);
+            label12.ForeColor = Color.DarkGreen;
+            label12.Location = new Point(50, 93);
+            label12.Margin = new Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new Size(180, 21);
+            label12.TabIndex = 23;
+            label12.Text = "SECRETARIA DE ESTADO";
+            // 
             // TCPServidor
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 255, 192);
             ClientSize = new Size(1594, 1074);
+            Controls.Add(label11);
+            Controls.Add(label12);
             Controls.Add(txtPastaCompartilhada);
             Controls.Add(btnSelecionarArquivo);
             Controls.Add(btnFecharConexao);
@@ -328,7 +358,7 @@ namespace TCPServidor
             MaximizeBox = false;
             Name = "TCPServidor";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "TCP/IP Servidor";
+            Text = "SEMA Chat";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -363,5 +393,7 @@ namespace TCPServidor
         private Button btnFecharConexao;
         private Button btnSelecionarArquivo;
         private TextBox txtPastaCompartilhada;
+        private Label label11;
+        private Label label12;
     }
 }

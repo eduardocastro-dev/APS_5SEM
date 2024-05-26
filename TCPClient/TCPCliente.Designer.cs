@@ -40,6 +40,8 @@
             btnDesconectar = new Button();
             btnSelecionarArquivo = new Button();
             txtPastaAnexo = new TextBox();
+            label10 = new Label();
+            label11 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -92,7 +94,7 @@
             txtMensagem.Location = new Point(197, 928);
             txtMensagem.Margin = new Padding(6, 4, 6, 4);
             txtMensagem.Name = "txtMensagem";
-            txtMensagem.Size = new Size(604, 39);
+            txtMensagem.Size = new Size(547, 39);
             txtMensagem.TabIndex = 6;
             // 
             // label2
@@ -122,7 +124,7 @@
             // txtNomeCliente
             // 
             txtNomeCliente.Location = new Point(212, 868);
-            txtNomeCliente.Margin = new Padding(6, 6, 6, 6);
+            txtNomeCliente.Margin = new Padding(6);
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(182, 39);
             txtNomeCliente.TabIndex = 8;
@@ -144,7 +146,7 @@
             // 
             cmbcor.FormattingEnabled = true;
             cmbcor.Location = new Point(479, 866);
-            cmbcor.Margin = new Padding(6, 6, 6, 6);
+            cmbcor.Margin = new Padding(6);
             cmbcor.Name = "cmbcor";
             cmbcor.Size = new Size(151, 40);
             cmbcor.TabIndex = 10;
@@ -153,7 +155,7 @@
             // txtInfo
             // 
             txtInfo.Location = new Point(121, 269);
-            txtInfo.Margin = new Padding(6, 6, 6, 6);
+            txtInfo.Margin = new Padding(6);
             txtInfo.Name = "txtInfo";
             txtInfo.Size = new Size(910, 522);
             txtInfo.TabIndex = 11;
@@ -176,7 +178,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             label6.ForeColor = Color.DarkGreen;
-            label6.Location = new Point(50, 147);
+            label6.Location = new Point(48, 157);
             label6.Margin = new Padding(6, 0, 6, 0);
             label6.Name = "label6";
             label6.Size = new Size(138, 41);
@@ -187,11 +189,12 @@
             // 
             btnAnexo.Enabled = false;
             btnAnexo.ForeColor = SystemColors.ActiveCaptionText;
-            btnAnexo.Location = new Point(810, 924);
+            btnAnexo.Location = new Point(754, 924);
             btnAnexo.Margin = new Padding(4, 2, 4, 2);
             btnAnexo.Name = "btnAnexo";
-            btnAnexo.Size = new Size(59, 47);
+            btnAnexo.Size = new Size(115, 47);
             btnAnexo.TabIndex = 14;
+            btnAnexo.Text = "Anexo";
             btnAnexo.UseVisualStyleBackColor = true;
             btnAnexo.Click += btnAnexo_Click;
             // 
@@ -204,6 +207,7 @@
             label7.Name = "label7";
             label7.Size = new Size(150, 70);
             label7.TabIndex = 15;
+            label7.Text = "SEMA";
             // 
             // label8
             // 
@@ -222,7 +226,7 @@
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 7F);
             label9.ForeColor = Color.DarkGreen;
-            label9.Location = new Point(453, 94);
+            label9.Location = new Point(453, 86);
             label9.Margin = new Padding(4, 0, 4, 0);
             label9.Name = "label9";
             label9.Size = new Size(291, 25);
@@ -246,7 +250,7 @@
             // 
             btnSelecionarArquivo.ForeColor = SystemColors.ActiveCaptionText;
             btnSelecionarArquivo.Location = new Point(642, 864);
-            btnSelecionarArquivo.Margin = new Padding(6, 6, 6, 6);
+            btnSelecionarArquivo.Margin = new Padding(6);
             btnSelecionarArquivo.Name = "btnSelecionarArquivo";
             btnSelecionarArquivo.Size = new Size(139, 43);
             btnSelecionarArquivo.TabIndex = 19;
@@ -258,17 +262,43 @@
             // 
             txtPastaAnexo.Enabled = false;
             txtPastaAnexo.Location = new Point(793, 868);
-            txtPastaAnexo.Margin = new Padding(6, 6, 6, 6);
+            txtPastaAnexo.Margin = new Padding(6);
             txtPastaAnexo.Name = "txtPastaAnexo";
             txtPastaAnexo.Size = new Size(238, 39);
             txtPastaAnexo.TabIndex = 20;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI", 6F);
+            label10.ForeColor = Color.DarkGreen;
+            label10.Location = new Point(28, 94);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(180, 21);
+            label10.TabIndex = 21;
+            label10.Text = "SECRETARIA DE ESTADO";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 6F);
+            label11.ForeColor = Color.DarkGreen;
+            label11.Location = new Point(36, 115);
+            label11.Margin = new Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new Size(152, 21);
+            label11.TabIndex = 22;
+            label11.Text = "DO MEIO AMBIENTE";
             // 
             // TCPCliente
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 255, 192);
-            ClientSize = new Size(1148, 1003);
+            ClientSize = new Size(1152, 1003);
+            Controls.Add(label11);
+            Controls.Add(label10);
             Controls.Add(txtPastaAnexo);
             Controls.Add(btnSelecionarArquivo);
             Controls.Add(btnDesconectar);
@@ -295,7 +325,7 @@
             MaximizeBox = false;
             Name = "TCPCliente";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "TCP/IP Cliente";
+            Text = "SEMA Chat";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -323,5 +353,7 @@
         private Button btnDesconectar;
         private Button btnSelecionarArquivo;
         private TextBox txtPastaAnexo;
+        private Label label10;
+        private Label label11;
     }
 }
