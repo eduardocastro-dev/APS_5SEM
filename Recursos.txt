@@ -1,59 +1,78 @@
-Pacote
-SuperSimpleTcp
+## TCPServidor
 
-- Formulário "TCPServidor":
+### Introdução
 
--Variáveis:
-servidor: Um objeto SimpleTcpServer que representa o servidor TCP.
-clientes: Um dicionário que armazena informações sobre os clientes conectados, como nome e cor.
+Este documento descreve a aplicação **TCPServidor**, que implementa um servidor TCP para comunicação e compartilhamento de arquivos entre múltiplos clientes. A aplicação permite que os usuários conectem-se ao servidor, enviem mensagens de texto, compartilhem imagens e recebam imagens de outros clientes conectados.
 
-- Eventos:
-btnIniciar_Click: Inicia o servidor e habilita a caixa de texto para enviar mensagens.
-Form1_Load: Configura a interface gráfica, incluindo a lista de cores e o endereço IP do servidor.
-Events_DataReceived: Processa as mensagens recebidas dos clientes, exibindo-as na interface gráfica e reenviando-as para os outros clientes.
-Events_ClientDisconnected: Remove o cliente da lista de clientes conectados e exibe uma mensagem na interface gráfica.
-Events_ClientConnected: Não possui código implementado, mas pode ser usado para executar ações adicionais quando um cliente se conecta.
-btnMensagem_Click: Envia uma mensagem para todos os clientes conectados.
-txtNomeServidor_TextChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando o nome do servidor é alterado.
-cmbCor_SelectedIndexChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando a cor do servidor é alterada.
+### Funcionalidades
 
-- Métodos:
-AppendText: Adiciona texto à caixa de texto com uma cor específica.
-AtualizarListaClientes: Atualiza a lista de clientes conectados na interface gráfica.
-GetIp: Retorna o endereço IP da máquina local.
+* **Iniciar servidor:** Inicia o servidor TCP, habilitando a escuta por conexões de clientes.
+* **Aceitar conexões:** Aceita novas conexões de clientes e inicia threads para lidar com cada cliente conectado.
+* **Gerenciar clientes:** Armazena informações sobre os clientes conectados, incluindo nome, cor de exibição e socket.
+* **Receber e processar mensagens:** Recebe mensagens de texto e dados de arquivo de clientes, processa a mensagem e reenvia para os demais clientes conectados.
+* **Enviar mensagens:** Permite que o servidor envie mensagens de texto para todos os clientes conectados.
+* **Compartilhar imagens:** Permite que o servidor receba imagens de clientes e as reencaminhe para outros clientes.
+* **Encerrar servidor:** Encerra o servidor, notificando os clientes, fechando sockets e liberando recursos.
 
-- Funcionalidades:
-O servidor escuta por conexões na porta 9000.
-Quando um cliente se conecta, o servidor solicita o nome e a cor do cliente.
-As mensagens dos clientes são exibidas na interface gráfica, junto com o nome e a cor do cliente.
-O servidor reenvia as mensagens dos clientes para todos os outros clientes conectados.
-A interface gráfica permite que o servidor envie mensagens para todos os clientes conectados.
+### Arquitetura
+
+A aplicação utiliza a biblioteca **System.Net.Sockets** para implementar a comunicação TCP. As funcionalidades são implementadas por meio de eventos e threads, garantindo que o servidor possa lidar com múltiplos clientes simultaneamente.
+
+### Uso
+
+1.  **Selecionar pasta compartilhada:**  Selecione a pasta onde o servidor salvará as imagens compartilhadas.
+2.  **Iniciar servidor:**  Clique no botão "Iniciar" para iniciar o servidor.
+3.  **Gerenciar clientes:**  A lista de clientes conectados é exibida na interface gráfica.
+4.  **Enviar mensagens:**  Digite uma mensagem na caixa de texto e clique em "Mensagem" para enviar para todos os clientes conectados.
+5.  **Compartilhar imagens:**  Clique em "Anexo" para escolher um arquivo de imagem e compartilhar com todos os clientes conectados.
+6.  **Encerrar servidor:**  Clique em "Fechar Conexão" para encerrar o servidor e desconectar todos os clientes.
+
+### Observações
+
+* O código inclui tratamento de erros para garantir a robustez da aplicação.
+* A documentação detalhada da implementação está disponível no código fonte.
+* Esta aplicação é um exemplo básico de servidor TCP. Recursos adicionais, como segurança e autenticação, podem ser implementados para atender a requisitos específicos.
+
+### Conclusão
+
+A aplicação **TCPServidor** oferece uma funcionalidade simples para comunicação e compartilhamento de arquivos entre múltiplos clientes. A aplicação demonstra o uso da biblioteca **System.Net.Sockets** para implementar um servidor TCP básico.
 
 
-- Formulário "TCPCliente":
 
-- Variáveis:
-cliente: Um objeto SimpleTcpClient que representa a conexão do cliente com o servidor.
+## TCPCliente
 
-- Eventos:
-btnConectar_Click: Cria uma nova conexão com o servidor, envia o nome e a cor do cliente e habilita a caixa de texto para enviar mensagens.
-btnMensagem_Click: Envia uma mensagem para o servidor.
-Form1_Load: Configura a interface gráfica, incluindo a lista de cores e as configurações iniciais.
-Events_DataReceived: Processa as mensagens recebidas do servidor, exibindo-as na interface gráfica.
-Events_Disconnected: Exibe uma mensagem na interface gráfica informando que a conexão foi encerrada.
-Events_Connected: Exibe uma mensagem na interface gráfica informando que a conexão foi estabelecida.
-txtIP_TextChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando o endereço IP é alterado.
-cmbcor_SelectedIndexChanged: Define a cor do texto na caixa de texto "txtInfo" de acordo com a cor selecionada.
-txtNomeCliente_TextChanged: Não possui código implementado, mas pode ser usado para executar ações adicionais quando o nome do cliente é alterado.
+### Introdução
 
-- Métodos:
-EnviarNomeECor: Envia o nome e a cor do cliente para o servidor.
-GetColorFromComboBox: Retorna a cor correspondente à seleção na caixa de combinação "cmbcor".
-AppendTextToRichTextBox: Adiciona texto à caixa de texto "richTextBox" com uma cor específica.
+Este documento descreve a aplicação **TCPCliente**, que implementa um cliente TCP para comunicação e compartilhamento de arquivos com um servidor TCP. A aplicação permite que os usuários se conectem a um servidor, enviem mensagens de texto, compartilhem imagens e recebam imagens do servidor.
 
-- Funcionalidades:
-O cliente permite que o usuário digite um nome de usuário e o endereço IP do servidor.
-O cliente tenta se conectar ao servidor na porta 9000.
-Quando a conexão é estabelecida, o cliente envia o nome e a cor do usuário para o servidor.
-O cliente pode enviar mensagens para o servidor, que são exibidas na interface gráfica.
-O cliente exibe as mensagens recebidas do servidor na interface gráfica.
+### Funcionalidades
+
+* **Conectar ao servidor:** Conecta o cliente a um servidor TCP com um endereço IP e porta específicos.
+* **Enviar nome e cor:** Envia o nome de usuário e a cor de exibição escolhida pelo cliente para o servidor.
+* **Enviar mensagens:**  Permite que o cliente envie mensagens de texto para o servidor.
+* **Compartilhar imagens:**  Permite que o cliente envie imagens para o servidor.
+* **Receber mensagens:**  Recebe mensagens de texto e dados de arquivo do servidor.
+* **Receber imagens:**  Recebe imagens do servidor e as salva em uma pasta local.
+* **Desconectar do servidor:** Desconecta o cliente do servidor e encerra a conexão.
+
+### Arquitetura
+
+A aplicação utiliza a biblioteca **System.Net.Sockets** para implementar a comunicação TCP. As funcionalidades são implementadas por meio de eventos e threads, garantindo que o cliente possa enviar e receber dados do servidor de forma assíncrona.
+
+### Uso
+
+1.  **Inserir informações:**  Insira o nome de usuário, o endereço IP do servidor e selecione a pasta para salvar as imagens recebidas.
+2.  **Conectar ao servidor:**  Clique no botão "Conectar" para conectar-se ao servidor.
+3.  **Enviar mensagens:**  Digite uma mensagem na caixa de texto e clique em "Mensagem" para enviar ao servidor.
+4.  **Compartilhar imagens:**  Clique em "Anexo" para escolher um arquivo de imagem e compartilhar com o servidor.
+5.  **Desconectar do servidor:**  Clique em "Desconectar" para encerrar a conexão com o servidor.
+
+### Observações
+
+* O código inclui tratamento de erros para garantir a robustez da aplicação.
+* A documentação detalhada da implementação está disponível no código fonte.
+* Esta aplicação é um exemplo básico de cliente TCP. Recursos adicionais, como segurança e autenticação, podem ser implementados para atender a requisitos específicos.
+
+### Conclusão
+
+A aplicação **TCPCliente** oferece uma funcionalidade simples para comunicação e compartilhamento de arquivos com um servidor TCP. A aplicação demonstra o uso da biblioteca **System.Net.Sockets** para implementar um cliente TCP básico.
